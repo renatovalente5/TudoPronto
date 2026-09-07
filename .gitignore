@@ -1,0 +1,6 @@
+node_modules/
+.DS_Store
+_source/verificar/capturas/
+.wrangler/
+api/.wrangler/
+*.log

@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tudo Pronto</title>
+<meta name="description" content="Combine as limpezas do seu alojamento local. A casa pronta para o próximo hóspede.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0F6E68" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#131819" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Tudo Pronto">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="/TudoPronto/app/manifesto.json">
+<link rel="icon" href="/TudoPronto/icone.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/TudoPronto/icone-180.png">
+<link rel="stylesheet" href="/TudoPronto/app/estilo.css?v=99f775e9">
+</head>
+<body class="app">
+
+<a class="salta" href="#principal">Ir para o conteúdo</a>
+
+<!-- Sem rede: o aviso vive aqui e nao e um dialogo. Nao tapa nada, nao come
+     toques, e diz o que acontece em vez de dizer o que falhou. -->
+<div id="rede" class="rede" hidden role="status">
+  <span class="rede__ponto" aria-hidden="true"></span>
+  <span id="rede-txt">Sem rede. O que fizer fica guardado no telemóvel e envia-se sozinho quando houver ligação.</span>
+</div>
+
+<header class="topo" id="topo" hidden>
+  <button type="button" class="topo__voltar" id="voltar" hidden>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span class="so-leitor">Voltar</span>
+  </button>
+  <h1 class="topo__t" id="topo-t">Tudo Pronto</h1>
+  <a class="topo__avisos" href="#/avisos" id="avisos-b" hidden>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a6 6 0 0 0-6 6c0 4-2 5-2 5h16s-2-1-2-5a6 6 0 0 0-6-6Zm0 18a2.5 2.5 0 0 0 2.4-1.8H9.6A2.5 2.5 0 0 0 12 21Z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span class="topo__conta" id="avisos-n" hidden></span>
+    <span class="so-leitor">Avisos</span>
+  </a>
+</header>
+
+<main id="principal" class="corpo" tabindex="-1">
+  <div class="carga" id="carga">
+    <span class="carga__roda" aria-hidden="true"></span>
+    <p>A abrir…</p>
+  </div>
+</main>
+
+<nav class="barra" id="barra" hidden aria-label="Secções">
+  <!-- Tres destinos, no maximo. Sem menu escondido: um menu de tres linhas e
+       o primeiro sitio onde se perde quem nao usa aplicacoes todos os dias. -->
+</nav>
+
+<!-- Barra de desfazer. Depois de uma accao, "Concluido. Anular" durante 15
+     segundos vale mais do que uma caixa de confirmacao ANTES: e mais rapida,
+     tolera toques acidentais com luvas, e nao pergunta nada a quem sabe o que
+     esta a fazer. -->
+<div class="desfaz" id="desfaz" hidden role="status" aria-live="polite">
+  <span id="desfaz-txt"></span>
+  <button type="button" class="desfaz__b" id="desfaz-b">Anular</button>
+</div>
+
+<div class="brinde" id="brinde" hidden role="status" aria-live="polite"></div>
+
+<script src="/TudoPronto/app/nucleo.js?v=99f775e9" type="module"></script>
+</body>
+</html>

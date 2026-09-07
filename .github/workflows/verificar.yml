@@ -1,0 +1,61 @@
+# A bateria completa: paleta, API e browser.
+#
+# Uma bateria que so corre quando alguem se lembra deixa de correr. Corre aqui,
+# em cada alteracao, com as fotografias de quem falhar guardadas como prova.
+name: Verificar
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '_source/**'
+      - 'api/**'
+      - '.github/workflows/verificar.yml'
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  bateria:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Contraste da paleta
+        run: node _source/verificar/contraste.mjs
+
+      - name: Construir
+        run: node _source/construir.mjs
+
+      - name: Preparar a base local do Worker
+        working-directory: api
+        run: npx --yes wrangler@latest d1 execute tudopronto --local --file=./esquema.sql -y
+
+      - name: Bateria da API
+        working-directory: api
+        run: |
+          npx --yes wrangler@latest dev --local --port 8787 \
+            --var SAL_TRAVAO:ci-nao-secreto --var AMBIENTE:dev &
+          for i in $(seq 1 60); do
+            curl -sf --max-time 2 http://127.0.0.1:8787/v1/parametros >/dev/null && break
+            sleep 2
+          done
+          cd .. && node _source/verificar/api.mjs
+
+      - name: Bateria de browser
+        # A bateria sobe o seu proprio servidor e o seu proprio Worker, e
+        # esvazia a base local antes de comecar.
+        run: BATERIA_CAPTURAS=1 node _source/verificar/bateria.mjs
+
+      - name: Guardar as fotografias de quem falhou
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: capturas
+          path: _source/verificar/capturas/
+          if-no-files-found: ignore
+          retention-days: 14

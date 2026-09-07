@@ -1,0 +1,36 @@
+name = "tudopronto-api"
+main = "src/index.js"
+compatibility_date = "2026-09-01"
+
+# Limpeza diaria: sessoes e codigos expirados, travao antigo, avaliacoes cujo
+# prazo de revelacao passou, servicos que ficaram para tras no mercado.
+[triggers]
+crons = ["17 3 * * *"]
+
+[[d1_databases]]
+binding = "BD"
+database_name = "tudopronto"
+database_id = "c6956968-c3f7-48d3-8956-7a650f42b767"
+
+# As fotografias vivem aqui e nao no D1: uma fotografia numa base relacional
+# gasta escritas (100k/dia) e leituras de linhas que nao servem para procurar
+# nada. O KV serve-as com cache na berma e o D1 fica so com os metadados.
+[[kv_namespaces]]
+binding = "FOTOS"
+id = "aa365b2497ac4c65a9688741c8d21f07"
+
+[observability]
+enabled = true
+
+[vars]
+AMBIENTE = "producao"
+
+# Segredos (wrangler secret put):
+#   SAL_TRAVAO         — sal do travao de abuso. Sem ele as rotas com travao
+#                        RECUSAM. Falhar aberto num travao e nao ter travao.
+#   MAILJET_CHAVE      — envio de email
+#   MAILJET_SEGREDO
+#   MAILJET_REMETENTE  — remetente unico confirmado, ate haver dominio proprio
+#   VAPID_PUBLICA      — avisos push
+#   VAPID_PRIVADA
+#   VAPID_CONTACTO     — mailto: exigido pela norma Web Push

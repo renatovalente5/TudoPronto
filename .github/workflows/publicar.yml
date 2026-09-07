@@ -1,0 +1,65 @@
+# Publica o Tudo Pronto no GitHub Pages.
+#
+# A construcao E a guarda: o gerador morre se faltar um campo obrigatorio em
+# _source/dados/site.json, e o verificador de contraste morre se algum par de
+# cores ficar abaixo do minimo. Sem isto, o backoffice de um dia apagava a
+# morada e o CI publicava a pagina legal sem ela, em silencio.
+#
+# A bateria de browser NAO corre aqui: precisa de Chrome e de um Worker local,
+# e leva minutos. Corre no `verificar.yml`, em cada alteracao ao codigo.
+name: Publicar
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  construir:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Medir o contraste da paleta
+        run: node _source/verificar/contraste.mjs
+
+      - name: Construir
+        run: node _source/construir.mjs
+
+      - name: A construcao tem de produzir o que se espera
+        # Contar ficheiros nao prova paginas: o que parte um site e uma
+        # ligacao para uma pagina que nao foi gerada.
+        run: |
+          set -e
+          for f in index.html como-funciona.html para-quem-tem-alojamento.html \
+                   para-quem-limpa.html apoio.html termos.html privacidade.html \
+                   404.html estilo.css app/index.html app/nucleo.js app/estilo.css \
+                   app/sw.js app/manifesto.json; do
+            test -s "$f" || { echo "FALTA: $f"; exit 1; }
+          done
+          # Nenhuma pagina pode ir para o ar com um marcador de texto por
+          # substituir.
+          if grep -rlE '\{\{[A-Z_]+\}\}' --include='*.html' --include='*.js' . ; then
+            echo "Ha marcadores por substituir."; exit 1
+          fi
+          echo "OK"
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - id: publicar
+        uses: actions/deploy-pages@v4

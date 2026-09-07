@@ -1,0 +1,555 @@
+/* Gerado de _source/marca/paleta.json — nao editar a mao.
+   O modo escuro esta escrito DUAS vezes de proposito: uma para quem nunca
+   escolheu (prefers-color-scheme) e outra para quem escolheu explicitamente
+   ([data-tema]). As duas tem de dizer o mesmo, e e por isso que saem da mesma
+   fonte em vez de serem copiadas. */
+:root {
+  --papel-1: #FBF9F5;
+  --papel-2: #FFFFFF;
+  --papel-3: #F0ECE4;
+  --papel-marca: #E4F0EE;
+  --tinta-1: #1B2528;
+  --tinta-2: #415157;
+  --tinta-3: #59696E;
+  --tinta-inv: #FFFFFF;
+  --marca: #0F6E68;
+  --marca-forte: #0A544F;
+  --marca-suave: #E4F0EE;
+  --acento: #B84A22;
+  --acento-suave: #FDF5F1;
+  --ok: #166D3B;
+  --ok-suave: #E3F2E8;
+  --aviso: #8A5A00;
+  --aviso-suave: #FBF0DA;
+  --erro: #B02020;
+  --erro-suave: #FBE7E7;
+  --linha: #1B252819;
+  --linha-campo: #7A8486;
+  --foco: #0F6E68;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-tema="claro"]) {
+  --papel-1: #131819;
+  --papel-2: #1B2224;
+  --papel-3: #252D2F;
+  --papel-marca: #123833;
+  --tinta-1: #ECEAE4;
+  --tinta-2: #B4BEC0;
+  --tinta-3: #9AA6A9;
+  --tinta-inv: #0C1112;
+  --marca: #5CCBBC;
+  --marca-forte: #8ADED2;
+  --marca-suave: #123833;
+  --acento: #F0956B;
+  --acento-suave: #3A2018;
+  --ok: #6BCF8E;
+  --ok-suave: #14301F;
+  --aviso: #E9B75A;
+  --aviso-suave: #33260C;
+  --erro: #F08A85;
+  --erro-suave: #3A1A1A;
+  --linha: #ECEAE424;
+  --linha-campo: #77878A;
+  --foco: #5CCBBC;
+  }
+}
+:root[data-tema="escuro"] {
+  --papel-1: #131819;
+  --papel-2: #1B2224;
+  --papel-3: #252D2F;
+  --papel-marca: #123833;
+  --tinta-1: #ECEAE4;
+  --tinta-2: #B4BEC0;
+  --tinta-3: #9AA6A9;
+  --tinta-inv: #0C1112;
+  --marca: #5CCBBC;
+  --marca-forte: #8ADED2;
+  --marca-suave: #123833;
+  --acento: #F0956B;
+  --acento-suave: #3A2018;
+  --ok: #6BCF8E;
+  --ok-suave: #14301F;
+  --aviso: #E9B75A;
+  --aviso-suave: #33260C;
+  --erro: #F08A85;
+  --erro-suave: #3A1A1A;
+  --linha: #ECEAE424;
+  --linha-campo: #77878A;
+  --foco: #5CCBBC;
+}
+
+/* Tudo Pronto — desenho.
+   As cores estao todas em paleta.css, gerado de _source/marca/paleta.json.
+   Nada de valores de cor neste ficheiro.
+
+   Os numeros de tamanho aqui nao sao gosto, sao medidas:
+   · 56px de altura no que se toca EM CAMPO (aceitar, comecar, fotografar,
+     concluir, estrelas). Quem usa isto esta de pe, com luvas de latex ou as
+     maos molhadas. O minimo da Apple e 44pt, o da Google 48dp, e a propria
+     Google sobe para 76dp nas interfaces de conducao.
+   · 48px no resto da aplicacao. 44px e o piso absoluto — nunca os 24px do
+     WCAG 2.5.8, que e o minimo legal e nao o minimo utilizavel.
+   · 24px de folga real entre uma accao positiva e uma destrutiva, e nunca as
+     duas na mesma linha.
+   · 17px de corpo minimo. Nada de 14px: em Portugal so 21% das pessoas entre
+     os 65 e os 74 anos tem literacia digital basica, e muitas donas de
+     alojamento estao nesse escalao.
+*/
+
+*, *::before, *::after { box-sizing: border-box; }
+
+/* O atributo `hidden` nao esconde NADA se o CSS declarar `display` — e este
+   ficheiro declara `display: flex` em avisos, barras e paineis. Sem esta
+   linha, o banner de "sem rede" e a barra de anular ficam a pairar no ecra
+   com o atributo `hidden` posto, a tapar botoes e a mentir a quem le. */
+[hidden] { display: none !important; }
+
+:root {
+  --fonte: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --toque: 48px;          /* alvo normal */
+  --toque-campo: 56px;    /* alvo de quem trabalha com luvas */
+  --folga-perigo: 24px;   /* entre uma accao positiva e uma destrutiva */
+  --r: 14px;              /* raio */
+  --r-p: 10px;
+  --largura: 1140px;
+  --sombra: 0 1px 2px rgba(0,0,0,.04), 0 4px 16px rgba(0,0,0,.05);
+  --sombra-alta: 0 2px 6px rgba(0,0,0,.06), 0 12px 32px rgba(0,0,0,.09);
+}
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  font: 17px/1.6 var(--fonte);
+  color: var(--tinta-1);
+  background: var(--papel-1);
+  -webkit-font-smoothing: antialiased;
+  /* O `overflow-wrap` evita que um nome de rua comprido rebente o cartao a
+     320px, que e onde tudo o que esta apertado se ve primeiro. */
+  overflow-wrap: break-word;
+}
+
+h1, h2, h3, h4 { margin: 0 0 .5em; line-height: 1.2; font-weight: 700; letter-spacing: -.02em; }
+h1 { font-size: clamp(2rem, 1.4rem + 2.6vw, 3.2rem); }
+h2 { font-size: clamp(1.5rem, 1.2rem + 1.4vw, 2.1rem); }
+h3 { font-size: 1.2rem; }
+p { margin: 0 0 1em; }
+a { color: var(--marca); text-decoration-thickness: .08em; text-underline-offset: .18em; }
+a:hover { color: var(--marca-forte); }
+img, svg, video { max-width: 100%; height: auto; }
+small { font-size: .93rem; }
+
+/* Um anel de foco visivel em TODO o lado. Tirar o contorno sem por outro
+   deixa quem navega por teclado sem saber onde esta. */
+:focus-visible {
+  outline: 3px solid var(--foco);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ─────────────────────────── movimento ───────────────────────────
+   O reset habitual (`animation-duration: .01ms !important`) NAO para uma
+   animacao infinita: acelera-a ate piscar, e transforma um carrossel calmo
+   num estroboscopio para quem pediu menos movimento. O que se faz e cortar
+   as iteracoes. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-iteration-count: 1 !important;
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ───────────────────────────── esqueleto ───────────────────────────── */
+
+.envolve { width: 100%; max-width: var(--largura); margin: 0 auto; padding: 0 20px; }
+.pilha > * + * { margin-top: var(--e, 16px); }
+.centro { text-align: center; }
+.fita { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.so-leitor {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* Salto para o conteudo: primeiro elemento focavel da pagina. */
+.salta {
+  position: absolute; left: 12px; top: -60px; z-index: 100;
+  background: var(--marca); color: var(--tinta-inv);
+  padding: 12px 18px; border-radius: var(--r-p); font-weight: 600;
+  transition: top .15s;
+}
+.salta:focus { top: 12px; color: var(--tinta-inv); }
+
+/* ───────────────────────────── botoes ───────────────────────────── */
+
+.b {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: var(--toque);
+  padding: 12px 22px;
+  font: 600 17px/1.25 var(--fonte);
+  border: 2px solid transparent;
+  border-radius: var(--r-p);
+  background: var(--marca);
+  color: var(--tinta-inv);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background .15s, transform .06s, border-color .15s;
+  /* Sem isto, um toque rapido em iOS selecciona o texto do botao em vez de o
+     premir. */
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+.b:hover { background: var(--marca-forte); color: var(--tinta-inv); }
+.b:active { transform: translateY(1px); }
+.b[disabled], .b[aria-disabled="true"] { opacity: .55; cursor: not-allowed; transform: none; }
+
+.b--contorno { background: transparent; color: var(--marca); border-color: var(--linha-campo); }
+.b--contorno:hover { background: var(--marca-suave); color: var(--marca-forte); border-color: var(--marca); }
+.b--acento { background: var(--acento); }
+.b--acento:hover { background: var(--acento); filter: brightness(.92); }
+.b--nu { background: transparent; color: var(--tinta-2); border-color: transparent; }
+.b--nu:hover { background: var(--papel-3); color: var(--tinta-1); }
+
+/* Destrutivo: contorno e nao cheio. A cor sozinha nao distingue nada para
+   quem nao ve cor — o peso visual tem de ser diferente tambem. */
+.b--perigo { background: transparent; color: var(--erro); border-color: var(--erro); }
+.b--perigo:hover { background: var(--erro-suave); color: var(--erro); }
+
+/* O botao de campo: largura total, ancorado, 56px, para o polegar. */
+.b--campo { min-height: var(--toque-campo); width: 100%; font-size: 19px; }
+.b--largo { width: 100%; }
+
+/* Uma accao destrutiva nunca fica encostada a uma positiva. */
+.zona-perigo { margin-top: var(--folga-perigo); padding-top: var(--folga-perigo); border-top: 1px solid var(--linha); }
+
+/* ───────────────────────────── cartoes ───────────────────────────── */
+
+.cartao {
+  background: var(--papel-2);
+  border: 1px solid var(--linha);
+  border-radius: var(--r);
+  padding: 20px;
+  box-shadow: var(--sombra);
+}
+.cartao--plano { box-shadow: none; }
+.cartao--fundo { background: var(--papel-3); box-shadow: none; }
+
+/* Cartao inteiro clicavel SEM display:contents, que tira o link da ordem de
+   tabulacao e faz o cartao desaparecer para quem navega por teclado. A
+   sobreposicao e um pseudo-elemento do link. */
+.cartao--liga { position: relative; }
+.cartao--liga a.capa::after { content: ''; position: absolute; inset: 0; border-radius: inherit; }
+.cartao--liga:has(a.capa:focus-visible) { outline: 3px solid var(--foco); outline-offset: 2px; }
+/* Qualquer coisa que tenha de ficar clicavel POR CIMA da capa. */
+.cartao--liga .acima { position: relative; z-index: 1; }
+
+.grelha { display: grid; gap: 16px; }
+@media (min-width: 640px)  { .grelha--2 { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 900px)  { .grelha--3 { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 1000px) { .grelha--4 { grid-template-columns: repeat(4, 1fr); } }
+
+/* ─────────────────────────── distintivos ─────────────────────────── */
+
+.dist {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 11px; border-radius: 999px;
+  font: 600 13px/1.35 var(--fonte);
+  background: var(--papel-3); color: var(--tinta-2);
+  white-space: nowrap;
+}
+.dist--marca { background: var(--marca-suave); color: var(--marca); }
+.dist--ok    { background: var(--ok-suave); color: var(--ok); }
+.dist--aviso { background: var(--aviso-suave); color: var(--aviso); }
+.dist--erro  { background: var(--erro-suave); color: var(--erro); }
+.dist--acento{ background: var(--acento-suave); color: var(--acento); }
+
+/* Um estado nunca se diz APENAS por cor: leva sempre a palavra ao lado, e
+   quando ha um ponto ele e decoracao (aria-hidden), nao informacao. */
+.ponto { width: 8px; height: 8px; border-radius: 50%; background: currentColor; flex: none; }
+
+/* ───────────────────────────── campos ───────────────────────────── */
+
+.campo { display: block; }
+.campo > .rotulo {
+  display: block; margin-bottom: 6px;
+  font: 600 15px/1.4 var(--fonte); color: var(--tinta-1);
+}
+.campo > .nota { display: block; margin-top: 6px; font-size: 14px; color: var(--tinta-3); }
+.campo > .erro { display: block; margin-top: 6px; font: 600 14px/1.4 var(--fonte); color: var(--erro); }
+
+input, select, textarea {
+  width: 100%;
+  min-height: var(--toque);
+  padding: 12px 14px;
+  font: 17px/1.4 var(--fonte);   /* 17px: abaixo disto o iOS aumenta o zoom ao focar */
+  color: var(--tinta-1);
+  background: var(--papel-2);
+  /* O contorno de um campo VAZIO e a unica pista de que ali se escreve: cai no
+     WCAG 1.4.11 (3:1) e nao na regra dos textos. Por isso tem variavel propria,
+     opaca e medida — nao o fio a 10% que serve para riscas de cartao. */
+  border: 1.5px solid var(--linha-campo);
+  border-radius: var(--r-p);
+  appearance: none;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: var(--marca);
+  outline: 3px solid var(--foco);
+  outline-offset: 1px;
+}
+input[aria-invalid="true"], select[aria-invalid="true"], textarea[aria-invalid="true"] {
+  border-color: var(--erro);
+}
+textarea { min-height: 110px; resize: vertical; line-height: 1.55; }
+select {
+  background-image: linear-gradient(45deg, transparent 50%, currentColor 50%),
+                    linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position: calc(100% - 20px) 55%, calc(100% - 14px) 55%;
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+  padding-right: 42px;
+}
+::placeholder { color: var(--tinta-3); opacity: 1; }
+
+/* Caixas e radios grandes: quem tem 68 anos nao acerta num quadrado de 16px. */
+.escolha {
+  display: flex; align-items: flex-start; gap: 12px;
+  min-height: var(--toque); padding: 12px 14px;
+  border: 1.5px solid var(--linha-campo); border-radius: var(--r-p);
+  background: var(--papel-2); cursor: pointer;
+}
+.escolha:hover { border-color: var(--marca); background: var(--marca-suave); }
+.escolha input { width: 24px; height: 24px; min-height: 0; flex: none; margin: 0; accent-color: var(--marca); }
+.escolha:has(input:checked) { border-color: var(--marca); background: var(--marca-suave); }
+.escolha:has(input:focus-visible) { outline: 3px solid var(--foco); outline-offset: 2px; }
+.escolha .txt { flex: 1; }
+.escolha .txt b { display: block; font-size: 16px; }
+.escolha .txt span { display: block; font-size: 14px; color: var(--tinta-2); }
+
+/* ───────────────────────────── avisos ───────────────────────────── */
+
+.aviso {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 14px 16px; border-radius: var(--r-p);
+  border: 1px solid var(--linha);
+  background: var(--papel-3);
+  font-size: 16px;
+}
+.aviso--ok    { background: var(--ok-suave); border-color: var(--ok); color: var(--ok); }
+.aviso--aviso { background: var(--aviso-suave); border-color: var(--aviso); color: var(--aviso); }
+.aviso--erro  { background: var(--erro-suave); border-color: var(--erro); color: var(--erro); }
+.aviso--marca { background: var(--marca-suave); border-color: var(--marca); color: var(--marca); }
+.aviso b { display: block; }
+
+/* Uma ligacao dentro de um aviso e uma ACCAO, nao texto corrido: e por ali
+   que a pessoa vai confirmar o email ou aumentar o raio de trabalho. Tem de
+   ser um alvo, e os 18 px de altura que uma ligacao inline tem nao sao um
+   alvo — foi o que a bateria apanhou. */
+.aviso a {
+  display: inline-flex; align-items: center;
+  min-height: 44px; padding: 4px 2px;
+  font-weight: 700; color: inherit;
+  text-decoration-thickness: .1em; text-underline-offset: .2em;
+}
+
+/* ───────────────────────────── numeros ───────────────────────────── */
+/* O valor em euros e o maior elemento de um cartao de servico: e a primeira
+   coisa que uma pessoa procura, e a hierarquia tem de dizer isso. */
+.valor {
+  font: 700 clamp(1.6rem, 1.3rem + 1vw, 2.1rem)/1 var(--fonte);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -.02em;
+  color: var(--tinta-1);
+}
+.valor small { font-size: .5em; font-weight: 600; color: var(--tinta-2); }
+.num { font-variant-numeric: tabular-nums; }
+
+/* ─────────────────────────── estrelas ─────────────────────────── */
+.estrelas { display: inline-flex; gap: 2px; color: var(--acento); }
+.estrelas svg { width: 1em; height: 1em; }
+
+/* Site de apresentacao. Depende de base.css e de paleta.css. */
+
+.logo { --logo-traco: currentColor; --logo-visto: currentColor; flex: none; }
+
+/* ───────────────────────────── cabeca ───────────────────────────── */
+.cabeca {
+  position: sticky; top: 0; z-index: 20;
+  background: color-mix(in srgb, var(--papel-1) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--linha);
+}
+@supports not (backdrop-filter: blur(1px)) { .cabeca { background: var(--papel-1); } }
+
+.cabeca__i { display: flex; align-items: center; gap: 20px; min-height: 68px; }
+.cabeca__marca {
+  display: inline-flex; align-items: center; gap: 9px;
+  font: 700 18px/1 var(--fonte); color: var(--tinta-1); text-decoration: none;
+  letter-spacing: -.02em; flex: none;
+}
+.cabeca__marca .logo { --logo-traco: var(--tinta-1); --logo-visto: var(--marca); }
+.cabeca__marca:hover { color: var(--tinta-1); }
+.cabeca__nav { display: none; gap: 4px; margin-left: auto; }
+.cabeca__nav a {
+  display: inline-flex; align-items: center; min-height: var(--toque);
+  padding: 0 14px; border-radius: var(--r-p);
+  font: 600 16px/1 var(--fonte); color: var(--tinta-2); text-decoration: none;
+}
+.cabeca__nav a:hover { background: var(--papel-3); color: var(--tinta-1); }
+.cabeca__nav a[aria-current="page"] { color: var(--marca); background: var(--marca-suave); }
+.cabeca__entrar { margin-left: auto; flex: none; }
+@media (min-width: 860px) {
+  .cabeca__nav { display: flex; }
+  .cabeca__entrar { margin-left: 0; }
+}
+
+/* ───────────────────────────── heroi ───────────────────────────── */
+.heroi {
+  padding: clamp(48px, 6vw, 96px) 0 clamp(40px, 5vw, 72px);
+  background:
+    radial-gradient(1000px 420px at 15% -10%, var(--marca-suave), transparent 65%),
+    radial-gradient(760px 340px at 92% 6%, var(--acento-suave), transparent 62%);
+}
+.heroi__i { max-width: 760px; }
+.heroi__olho {
+  font: 700 13px/1 var(--fonte); letter-spacing: .1em; text-transform: uppercase;
+  color: var(--marca); margin: 0 0 16px;
+}
+.heroi h1 { margin: 0 0 20px; }
+.heroi__sub { font-size: clamp(1.06rem, 1rem + .5vw, 1.3rem); color: var(--tinta-2); max-width: 620px; margin: 0 0 28px; }
+.heroi__accoes { display: flex; flex-wrap: wrap; gap: 12px; }
+.heroi__b { flex: 1 1 240px; max-width: 300px; }
+.heroi__nota { margin: 18px 0 0; font-size: 15px; color: var(--tinta-3); }
+
+/* ───────────────────────────── faixa ───────────────────────────── */
+.faixa { border-block: 1px solid var(--linha); background: var(--papel-2); }
+.faixa__grelha { display: grid; gap: 4px; padding: 28px 0; }
+@media (min-width: 720px) { .faixa__grelha { grid-template-columns: repeat(3, 1fr); gap: 24px; } }
+.faixa__grelha div { display: flex; flex-direction: column; gap: 4px; padding: 8px 0; }
+.faixa__grelha b {
+  font: 700 clamp(1.7rem, 1.4rem + 1.2vw, 2.4rem)/1 var(--fonte);
+  color: var(--marca); font-variant-numeric: tabular-nums; letter-spacing: -.02em;
+}
+.faixa__grelha span { font-size: 15px; color: var(--tinta-2); line-height: 1.45; }
+
+/* ───────────────────────────── seccoes ───────────────────────────── */
+.secc { padding: clamp(48px, 6vw, 88px) 0; }
+.secc--alt { background: var(--papel-2); border-block: 1px solid var(--linha); }
+.secc__cabeca { max-width: 660px; margin: 0 0 clamp(28px, 4vw, 44px); }
+.secc__cabeca h2 { margin: 0 0 12px; }
+.secc__sub { font-size: clamp(1rem, .96rem + .35vw, 1.14rem); color: var(--tinta-2); margin: 0; }
+.envolve--estreito { max-width: 760px; }
+.mudo { color: var(--tinta-2); margin: 0; }
+
+/* ─────────────────────────── listas ─────────────────────────── */
+.lista { list-style: none; margin: 0; padding: 0; display: grid; gap: 11px; }
+.lista li { position: relative; padding-left: 30px; color: var(--tinta-2); line-height: 1.5; }
+.lista li::before {
+  position: absolute; left: 0; top: 0;
+  font-weight: 700; font-size: 17px;
+}
+.lista--pro li::before { content: '✓'; color: var(--ok); }
+.lista--contra li::before { content: '✕'; color: var(--aviso); }
+
+.comparar h3 { margin: 0 0 16px; }
+
+/* ─────────────────────────── lados e passos ─────────────────────────── */
+.lados__t { margin: 0 0 18px; }
+.passos { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; counter-reset: p; }
+.passos li { display: flex; gap: 14px; align-items: flex-start; }
+.passos__n {
+  flex: none; width: 32px; height: 32px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--marca-suave); color: var(--marca);
+  font: 700 15px/1 var(--fonte);
+}
+.passos li b { display: block; font-size: 17px; margin-bottom: 3px; }
+.passos li span { display: block; color: var(--tinta-2); font-size: 15.5px; line-height: 1.5; }
+
+/* ─────────────────────────── preco ─────────────────────────── */
+.preco { text-align: left; }
+.preco__v {
+  font: 700 clamp(3rem, 2.4rem + 3vw, 4.4rem)/1 var(--fonte);
+  color: var(--marca); margin: 0 0 8px; letter-spacing: -.03em;
+}
+.preco__d { font-size: 1.1rem; color: var(--tinta-1); margin: 0 0 22px; }
+.preco__nota { margin-top: 22px; font-size: 14.5px; padding-top: 18px; border-top: 1px solid var(--linha); }
+
+/* ─────────────────────────── faq ─────────────────────────── */
+.faq { display: grid; gap: 10px; }
+.faq__i { background: var(--papel-2); border: 1px solid var(--linha); border-radius: var(--r); overflow: hidden; }
+.faq__i summary {
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  min-height: var(--toque); padding: 15px 18px;
+  font: 600 17px/1.4 var(--fonte); cursor: pointer;
+  list-style: none;
+}
+.faq__i summary::-webkit-details-marker { display: none; }
+.faq__i summary::after {
+  content: ''; flex: none; width: 11px; height: 11px;
+  border-right: 2.5px solid var(--tinta-3); border-bottom: 2.5px solid var(--tinta-3);
+  transform: rotate(45deg) translateY(-2px); transition: transform .18s;
+}
+.faq__i[open] summary::after { transform: rotate(-135deg) translateY(-2px); }
+.faq__i summary:hover { background: var(--papel-3); }
+.faq__r { padding: 0 18px 18px; }
+.faq__r p { margin: 0; color: var(--tinta-2); }
+
+/* ─────────────────────────── chamada ─────────────────────────── */
+.chama {
+  padding: clamp(52px, 6vw, 88px) 0;
+  background: linear-gradient(160deg, var(--marca-suave), var(--acento-suave));
+  border-top: 1px solid var(--linha);
+}
+.chama h2 { margin: 0 0 12px; }
+.chama p { color: var(--tinta-2); max-width: 520px; margin: 0 auto 26px; }
+.fita--centro { justify-content: center; }
+.chama .b { flex: 1 1 220px; max-width: 280px; }
+
+.notas { padding: 26px 0 34px; background: var(--papel-1); }
+.notas p { font-size: 13.5px; color: var(--tinta-3); margin: 0; line-height: 1.6; }
+
+/* ─────────────────────────── rodape ─────────────────────────── */
+.pe { background: var(--papel-2); border-top: 1px solid var(--linha); padding: clamp(40px, 5vw, 60px) 0 28px; }
+.pe__grelha { display: grid; gap: 30px; }
+@media (min-width: 700px) { .pe__grelha { grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 34px; } }
+.pe__marca {
+  display: inline-flex; align-items: center; gap: 9px;
+  font: 700 17px/1 var(--fonte); color: var(--tinta-1); text-decoration: none; letter-spacing: -.02em;
+}
+.pe__marca .logo { --logo-traco: var(--tinta-1); --logo-visto: var(--marca); }
+.pe__tag { margin: 12px 0 0; color: var(--tinta-2); font-size: 15px; max-width: 260px; }
+.pe h2 { font: 700 13px/1 var(--fonte); letter-spacing: .09em; text-transform: uppercase; color: var(--tinta-3); margin: 0 0 14px; }
+.pe ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.pe ul a {
+  display: inline-flex; align-items: center; min-height: 40px;
+  color: var(--tinta-2); text-decoration: none; font-size: 15.5px;
+}
+.pe ul a:hover { color: var(--marca); text-decoration: underline; }
+.pe__fim {
+  margin: 34px 0 0; padding-top: 22px; border-top: 1px solid var(--linha);
+  font-size: 13.5px; color: var(--tinta-3); line-height: 1.6;
+}
+
+/* ─────────────────────────── artigo (paginas de texto) ─────────────────────────── */
+.artigo { padding: clamp(36px, 5vw, 64px) 0 clamp(48px, 6vw, 80px); }
+.artigo h1 { margin: 0 0 14px; }
+.artigo__olho { font: 700 13px/1 var(--fonte); letter-spacing: .1em; text-transform: uppercase; color: var(--marca); margin: 0 0 14px; }
+.artigo__intro { font-size: 1.14rem; color: var(--tinta-2); margin: 0 0 8px; }
+.artigo__data { font-size: 14px; color: var(--tinta-3); margin: 0 0 36px; }
+.artigo h2 { margin: 42px 0 14px; font-size: 1.5rem; }
+.artigo h3 { margin: 28px 0 10px; font-size: 1.16rem; }
+.artigo p, .artigo li { color: var(--tinta-2); }
+.artigo ul, .artigo ol { padding-left: 22px; display: grid; gap: 8px; margin: 0 0 1em; }
+.artigo strong { color: var(--tinta-1); }
+.artigo__indice { background: var(--papel-3); border-radius: var(--r); padding: 20px 22px; margin: 0 0 36px; }
+.artigo__indice h2 { margin: 0 0 12px; font-size: 14px; letter-spacing: .08em; text-transform: uppercase; color: var(--tinta-3); }
+.artigo__indice ol { margin: 0; }
+.artigo dl { margin: 0 0 1em; }
+.artigo dt { font-weight: 700; color: var(--tinta-1); margin-top: 16px; }
+.artigo dd { margin: 4px 0 0; color: var(--tinta-2); }
+.tabela-rolo { overflow-x: auto; margin: 0 0 1.4em; }
+.artigo table { border-collapse: collapse; width: 100%; min-width: 460px; font-size: 15.5px; }
+.artigo th, .artigo td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--linha); vertical-align: top; }
+.artigo th { font-weight: 700; color: var(--tinta-1); background: var(--papel-3); }

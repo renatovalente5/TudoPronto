@@ -1,0 +1,735 @@
+/* Gerado de _source/marca/paleta.json — nao editar a mao.
+   O modo escuro esta escrito DUAS vezes de proposito: uma para quem nunca
+   escolheu (prefers-color-scheme) e outra para quem escolheu explicitamente
+   ([data-tema]). As duas tem de dizer o mesmo, e e por isso que saem da mesma
+   fonte em vez de serem copiadas. */
+:root {
+  --papel-1: #FBF9F5;
+  --papel-2: #FFFFFF;
+  --papel-3: #F0ECE4;
+  --papel-marca: #E4F0EE;
+  --tinta-1: #1B2528;
+  --tinta-2: #415157;
+  --tinta-3: #59696E;
+  --tinta-inv: #FFFFFF;
+  --marca: #0F6E68;
+  --marca-forte: #0A544F;
+  --marca-suave: #E4F0EE;
+  --acento: #B84A22;
+  --acento-suave: #FDF5F1;
+  --ok: #166D3B;
+  --ok-suave: #E3F2E8;
+  --aviso: #8A5A00;
+  --aviso-suave: #FBF0DA;
+  --erro: #B02020;
+  --erro-suave: #FBE7E7;
+  --linha: #1B252819;
+  --linha-campo: #7A8486;
+  --foco: #0F6E68;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-tema="claro"]) {
+  --papel-1: #131819;
+  --papel-2: #1B2224;
+  --papel-3: #252D2F;
+  --papel-marca: #123833;
+  --tinta-1: #ECEAE4;
+  --tinta-2: #B4BEC0;
+  --tinta-3: #9AA6A9;
+  --tinta-inv: #0C1112;
+  --marca: #5CCBBC;
+  --marca-forte: #8ADED2;
+  --marca-suave: #123833;
+  --acento: #F0956B;
+  --acento-suave: #3A2018;
+  --ok: #6BCF8E;
+  --ok-suave: #14301F;
+  --aviso: #E9B75A;
+  --aviso-suave: #33260C;
+  --erro: #F08A85;
+  --erro-suave: #3A1A1A;
+  --linha: #ECEAE424;
+  --linha-campo: #77878A;
+  --foco: #5CCBBC;
+  }
+}
+:root[data-tema="escuro"] {
+  --papel-1: #131819;
+  --papel-2: #1B2224;
+  --papel-3: #252D2F;
+  --papel-marca: #123833;
+  --tinta-1: #ECEAE4;
+  --tinta-2: #B4BEC0;
+  --tinta-3: #9AA6A9;
+  --tinta-inv: #0C1112;
+  --marca: #5CCBBC;
+  --marca-forte: #8ADED2;
+  --marca-suave: #123833;
+  --acento: #F0956B;
+  --acento-suave: #3A2018;
+  --ok: #6BCF8E;
+  --ok-suave: #14301F;
+  --aviso: #E9B75A;
+  --aviso-suave: #33260C;
+  --erro: #F08A85;
+  --erro-suave: #3A1A1A;
+  --linha: #ECEAE424;
+  --linha-campo: #77878A;
+  --foco: #5CCBBC;
+}
+
+/* Tudo Pronto — desenho.
+   As cores estao todas em paleta.css, gerado de _source/marca/paleta.json.
+   Nada de valores de cor neste ficheiro.
+
+   Os numeros de tamanho aqui nao sao gosto, sao medidas:
+   · 56px de altura no que se toca EM CAMPO (aceitar, comecar, fotografar,
+     concluir, estrelas). Quem usa isto esta de pe, com luvas de latex ou as
+     maos molhadas. O minimo da Apple e 44pt, o da Google 48dp, e a propria
+     Google sobe para 76dp nas interfaces de conducao.
+   · 48px no resto da aplicacao. 44px e o piso absoluto — nunca os 24px do
+     WCAG 2.5.8, que e o minimo legal e nao o minimo utilizavel.
+   · 24px de folga real entre uma accao positiva e uma destrutiva, e nunca as
+     duas na mesma linha.
+   · 17px de corpo minimo. Nada de 14px: em Portugal so 21% das pessoas entre
+     os 65 e os 74 anos tem literacia digital basica, e muitas donas de
+     alojamento estao nesse escalao.
+*/
+
+*, *::before, *::after { box-sizing: border-box; }
+
+/* O atributo `hidden` nao esconde NADA se o CSS declarar `display` — e este
+   ficheiro declara `display: flex` em avisos, barras e paineis. Sem esta
+   linha, o banner de "sem rede" e a barra de anular ficam a pairar no ecra
+   com o atributo `hidden` posto, a tapar botoes e a mentir a quem le. */
+[hidden] { display: none !important; }
+
+:root {
+  --fonte: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --toque: 48px;          /* alvo normal */
+  --toque-campo: 56px;    /* alvo de quem trabalha com luvas */
+  --folga-perigo: 24px;   /* entre uma accao positiva e uma destrutiva */
+  --r: 14px;              /* raio */
+  --r-p: 10px;
+  --largura: 1140px;
+  --sombra: 0 1px 2px rgba(0,0,0,.04), 0 4px 16px rgba(0,0,0,.05);
+  --sombra-alta: 0 2px 6px rgba(0,0,0,.06), 0 12px 32px rgba(0,0,0,.09);
+}
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  font: 17px/1.6 var(--fonte);
+  color: var(--tinta-1);
+  background: var(--papel-1);
+  -webkit-font-smoothing: antialiased;
+  /* O `overflow-wrap` evita que um nome de rua comprido rebente o cartao a
+     320px, que e onde tudo o que esta apertado se ve primeiro. */
+  overflow-wrap: break-word;
+}
+
+h1, h2, h3, h4 { margin: 0 0 .5em; line-height: 1.2; font-weight: 700; letter-spacing: -.02em; }
+h1 { font-size: clamp(2rem, 1.4rem + 2.6vw, 3.2rem); }
+h2 { font-size: clamp(1.5rem, 1.2rem + 1.4vw, 2.1rem); }
+h3 { font-size: 1.2rem; }
+p { margin: 0 0 1em; }
+a { color: var(--marca); text-decoration-thickness: .08em; text-underline-offset: .18em; }
+a:hover { color: var(--marca-forte); }
+img, svg, video { max-width: 100%; height: auto; }
+small { font-size: .93rem; }
+
+/* Um anel de foco visivel em TODO o lado. Tirar o contorno sem por outro
+   deixa quem navega por teclado sem saber onde esta. */
+:focus-visible {
+  outline: 3px solid var(--foco);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ─────────────────────────── movimento ───────────────────────────
+   O reset habitual (`animation-duration: .01ms !important`) NAO para uma
+   animacao infinita: acelera-a ate piscar, e transforma um carrossel calmo
+   num estroboscopio para quem pediu menos movimento. O que se faz e cortar
+   as iteracoes. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-iteration-count: 1 !important;
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ───────────────────────────── esqueleto ───────────────────────────── */
+
+.envolve { width: 100%; max-width: var(--largura); margin: 0 auto; padding: 0 20px; }
+.pilha > * + * { margin-top: var(--e, 16px); }
+.centro { text-align: center; }
+.fita { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.so-leitor {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* Salto para o conteudo: primeiro elemento focavel da pagina. */
+.salta {
+  position: absolute; left: 12px; top: -60px; z-index: 100;
+  background: var(--marca); color: var(--tinta-inv);
+  padding: 12px 18px; border-radius: var(--r-p); font-weight: 600;
+  transition: top .15s;
+}
+.salta:focus { top: 12px; color: var(--tinta-inv); }
+
+/* ───────────────────────────── botoes ───────────────────────────── */
+
+.b {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: var(--toque);
+  padding: 12px 22px;
+  font: 600 17px/1.25 var(--fonte);
+  border: 2px solid transparent;
+  border-radius: var(--r-p);
+  background: var(--marca);
+  color: var(--tinta-inv);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background .15s, transform .06s, border-color .15s;
+  /* Sem isto, um toque rapido em iOS selecciona o texto do botao em vez de o
+     premir. */
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+.b:hover { background: var(--marca-forte); color: var(--tinta-inv); }
+.b:active { transform: translateY(1px); }
+.b[disabled], .b[aria-disabled="true"] { opacity: .55; cursor: not-allowed; transform: none; }
+
+.b--contorno { background: transparent; color: var(--marca); border-color: var(--linha-campo); }
+.b--contorno:hover { background: var(--marca-suave); color: var(--marca-forte); border-color: var(--marca); }
+.b--acento { background: var(--acento); }
+.b--acento:hover { background: var(--acento); filter: brightness(.92); }
+.b--nu { background: transparent; color: var(--tinta-2); border-color: transparent; }
+.b--nu:hover { background: var(--papel-3); color: var(--tinta-1); }
+
+/* Destrutivo: contorno e nao cheio. A cor sozinha nao distingue nada para
+   quem nao ve cor — o peso visual tem de ser diferente tambem. */
+.b--perigo { background: transparent; color: var(--erro); border-color: var(--erro); }
+.b--perigo:hover { background: var(--erro-suave); color: var(--erro); }
+
+/* O botao de campo: largura total, ancorado, 56px, para o polegar. */
+.b--campo { min-height: var(--toque-campo); width: 100%; font-size: 19px; }
+.b--largo { width: 100%; }
+
+/* Uma accao destrutiva nunca fica encostada a uma positiva. */
+.zona-perigo { margin-top: var(--folga-perigo); padding-top: var(--folga-perigo); border-top: 1px solid var(--linha); }
+
+/* ───────────────────────────── cartoes ───────────────────────────── */
+
+.cartao {
+  background: var(--papel-2);
+  border: 1px solid var(--linha);
+  border-radius: var(--r);
+  padding: 20px;
+  box-shadow: var(--sombra);
+}
+.cartao--plano { box-shadow: none; }
+.cartao--fundo { background: var(--papel-3); box-shadow: none; }
+
+/* Cartao inteiro clicavel SEM display:contents, que tira o link da ordem de
+   tabulacao e faz o cartao desaparecer para quem navega por teclado. A
+   sobreposicao e um pseudo-elemento do link. */
+.cartao--liga { position: relative; }
+.cartao--liga a.capa::after { content: ''; position: absolute; inset: 0; border-radius: inherit; }
+.cartao--liga:has(a.capa:focus-visible) { outline: 3px solid var(--foco); outline-offset: 2px; }
+/* Qualquer coisa que tenha de ficar clicavel POR CIMA da capa. */
+.cartao--liga .acima { position: relative; z-index: 1; }
+
+.grelha { display: grid; gap: 16px; }
+@media (min-width: 640px)  { .grelha--2 { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 900px)  { .grelha--3 { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 1000px) { .grelha--4 { grid-template-columns: repeat(4, 1fr); } }
+
+/* ─────────────────────────── distintivos ─────────────────────────── */
+
+.dist {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 11px; border-radius: 999px;
+  font: 600 13px/1.35 var(--fonte);
+  background: var(--papel-3); color: var(--tinta-2);
+  white-space: nowrap;
+}
+.dist--marca { background: var(--marca-suave); color: var(--marca); }
+.dist--ok    { background: var(--ok-suave); color: var(--ok); }
+.dist--aviso { background: var(--aviso-suave); color: var(--aviso); }
+.dist--erro  { background: var(--erro-suave); color: var(--erro); }
+.dist--acento{ background: var(--acento-suave); color: var(--acento); }
+
+/* Um estado nunca se diz APENAS por cor: leva sempre a palavra ao lado, e
+   quando ha um ponto ele e decoracao (aria-hidden), nao informacao. */
+.ponto { width: 8px; height: 8px; border-radius: 50%; background: currentColor; flex: none; }
+
+/* ───────────────────────────── campos ───────────────────────────── */
+
+.campo { display: block; }
+.campo > .rotulo {
+  display: block; margin-bottom: 6px;
+  font: 600 15px/1.4 var(--fonte); color: var(--tinta-1);
+}
+.campo > .nota { display: block; margin-top: 6px; font-size: 14px; color: var(--tinta-3); }
+.campo > .erro { display: block; margin-top: 6px; font: 600 14px/1.4 var(--fonte); color: var(--erro); }
+
+input, select, textarea {
+  width: 100%;
+  min-height: var(--toque);
+  padding: 12px 14px;
+  font: 17px/1.4 var(--fonte);   /* 17px: abaixo disto o iOS aumenta o zoom ao focar */
+  color: var(--tinta-1);
+  background: var(--papel-2);
+  /* O contorno de um campo VAZIO e a unica pista de que ali se escreve: cai no
+     WCAG 1.4.11 (3:1) e nao na regra dos textos. Por isso tem variavel propria,
+     opaca e medida — nao o fio a 10% que serve para riscas de cartao. */
+  border: 1.5px solid var(--linha-campo);
+  border-radius: var(--r-p);
+  appearance: none;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: var(--marca);
+  outline: 3px solid var(--foco);
+  outline-offset: 1px;
+}
+input[aria-invalid="true"], select[aria-invalid="true"], textarea[aria-invalid="true"] {
+  border-color: var(--erro);
+}
+textarea { min-height: 110px; resize: vertical; line-height: 1.55; }
+select {
+  background-image: linear-gradient(45deg, transparent 50%, currentColor 50%),
+                    linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position: calc(100% - 20px) 55%, calc(100% - 14px) 55%;
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+  padding-right: 42px;
+}
+::placeholder { color: var(--tinta-3); opacity: 1; }
+
+/* Caixas e radios grandes: quem tem 68 anos nao acerta num quadrado de 16px. */
+.escolha {
+  display: flex; align-items: flex-start; gap: 12px;
+  min-height: var(--toque); padding: 12px 14px;
+  border: 1.5px solid var(--linha-campo); border-radius: var(--r-p);
+  background: var(--papel-2); cursor: pointer;
+}
+.escolha:hover { border-color: var(--marca); background: var(--marca-suave); }
+.escolha input { width: 24px; height: 24px; min-height: 0; flex: none; margin: 0; accent-color: var(--marca); }
+.escolha:has(input:checked) { border-color: var(--marca); background: var(--marca-suave); }
+.escolha:has(input:focus-visible) { outline: 3px solid var(--foco); outline-offset: 2px; }
+.escolha .txt { flex: 1; }
+.escolha .txt b { display: block; font-size: 16px; }
+.escolha .txt span { display: block; font-size: 14px; color: var(--tinta-2); }
+
+/* ───────────────────────────── avisos ───────────────────────────── */
+
+.aviso {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 14px 16px; border-radius: var(--r-p);
+  border: 1px solid var(--linha);
+  background: var(--papel-3);
+  font-size: 16px;
+}
+.aviso--ok    { background: var(--ok-suave); border-color: var(--ok); color: var(--ok); }
+.aviso--aviso { background: var(--aviso-suave); border-color: var(--aviso); color: var(--aviso); }
+.aviso--erro  { background: var(--erro-suave); border-color: var(--erro); color: var(--erro); }
+.aviso--marca { background: var(--marca-suave); border-color: var(--marca); color: var(--marca); }
+.aviso b { display: block; }
+
+/* Uma ligacao dentro de um aviso e uma ACCAO, nao texto corrido: e por ali
+   que a pessoa vai confirmar o email ou aumentar o raio de trabalho. Tem de
+   ser um alvo, e os 18 px de altura que uma ligacao inline tem nao sao um
+   alvo — foi o que a bateria apanhou. */
+.aviso a {
+  display: inline-flex; align-items: center;
+  min-height: 44px; padding: 4px 2px;
+  font-weight: 700; color: inherit;
+  text-decoration-thickness: .1em; text-underline-offset: .2em;
+}
+
+/* ───────────────────────────── numeros ───────────────────────────── */
+/* O valor em euros e o maior elemento de um cartao de servico: e a primeira
+   coisa que uma pessoa procura, e a hierarquia tem de dizer isso. */
+.valor {
+  font: 700 clamp(1.6rem, 1.3rem + 1vw, 2.1rem)/1 var(--fonte);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -.02em;
+  color: var(--tinta-1);
+}
+.valor small { font-size: .5em; font-weight: 600; color: var(--tinta-2); }
+.num { font-variant-numeric: tabular-nums; }
+
+/* ─────────────────────────── estrelas ─────────────────────────── */
+.estrelas { display: inline-flex; gap: 2px; color: var(--acento); }
+.estrelas svg { width: 1em; height: 1em; }
+
+/* A aplicacao. Depende de paleta.css e de base.css.
+
+   Duas ideias governam este ficheiro:
+
+   1. UM botao primario por ecra, largura total, ancorado no fundo, 56px de
+      altura. O rotulo muda com o estado do servico: Oferecer-me, A caminho,
+      Comecar, Tudo pronto. Todo o resto do ecra e informacao. Quem usa isto
+      esta de pe, com uma mao, e com pressa.
+
+   2. Nada de barras de progresso nem de passos numerados nos formularios. Uma
+      pergunta de cada vez, e a seguinte quando esta estiver respondida.
+*/
+
+.app {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--papel-1);
+  /* Respeitar as zonas do iPhone. Sem isto o botao do fundo fica debaixo da
+     barra do sistema e nao se consegue premir. */
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* ─────────────────────────────── topo ─────────────────────────────── */
+.topo {
+  position: sticky; top: 0; z-index: 15;
+  display: flex; align-items: center; gap: 4px;
+  min-height: 58px; padding: 0 8px;
+  padding-top: env(safe-area-inset-top);
+  background: var(--papel-2);
+  border-bottom: 1px solid var(--linha);
+}
+.topo__t {
+  flex: 1; margin: 0; padding: 0 6px;
+  font: 700 19px/1.25 var(--fonte); letter-spacing: -.02em;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.topo__voltar, .topo__avisos {
+  flex: none; position: relative;
+  width: var(--toque); height: var(--toque);
+  display: grid; place-items: center;
+  border: 0; border-radius: var(--r-p); background: transparent;
+  color: var(--tinta-1); cursor: pointer; text-decoration: none;
+}
+.topo__voltar:hover, .topo__avisos:hover { background: var(--papel-3); }
+.topo__voltar svg, .topo__avisos svg { width: 24px; height: 24px; }
+.topo__conta {
+  position: absolute; top: 6px; right: 6px;
+  min-width: 19px; height: 19px; padding: 0 5px;
+  display: grid; place-items: center;
+  border-radius: 999px; background: var(--acento); color: var(--tinta-inv);
+  font: 700 11px/1 var(--fonte);
+}
+
+/* ───────────────────────────── corpo ───────────────────────────── */
+.corpo {
+  flex: 1;
+  width: 100%; max-width: 720px; margin: 0 auto;
+  padding: 18px 16px calc(28px + env(safe-area-inset-bottom));
+}
+.corpo:focus { outline: none; }
+.corpo--com-barra { padding-bottom: calc(96px + env(safe-area-inset-bottom)); }
+.corpo--com-accao { padding-bottom: calc(104px + env(safe-area-inset-bottom)); }
+
+.carga { padding: 60px 0; text-align: center; color: var(--tinta-3); }
+.carga__roda {
+  display: block; width: 30px; height: 30px; margin: 0 auto 14px;
+  border: 3px solid var(--linha-campo); border-top-color: var(--marca);
+  border-radius: 50%; animation: roda .8s linear infinite;
+}
+@keyframes roda { to { transform: rotate(360deg); } }
+
+/* ───────────────────────── barra de secçoes ───────────────────────── */
+.barra {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 14;
+  display: flex;
+  background: var(--papel-2);
+  border-top: 1px solid var(--linha);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.barra a {
+  flex: 1;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+  min-height: 62px; padding: 8px 4px;
+  color: var(--tinta-3); text-decoration: none;
+  font: 600 11.5px/1.1 var(--fonte);
+}
+.barra a svg { width: 25px; height: 25px; }
+.barra a[aria-current="page"] { color: var(--marca); }
+.barra a:hover { color: var(--tinta-1); }
+
+/* ───────────────────── accao ancorada (o botao) ───────────────────── */
+.accao {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 13;
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+  background: color-mix(in srgb, var(--papel-1) 92%, transparent);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid var(--linha);
+}
+@supports not (backdrop-filter: blur(1px)) { .accao { background: var(--papel-1); } }
+.accao__i { max-width: 720px; margin: 0 auto; }
+.accao__nota { margin: 8px 0 0; font-size: 13.5px; color: var(--tinta-3); text-align: center; }
+
+/* ───────────────────────── sem rede / brindes ───────────────────────── */
+.rede {
+  display: flex; align-items: center; gap: 9px;
+  padding: 10px 16px;
+  background: var(--aviso-suave); color: var(--aviso);
+  font: 600 14px/1.4 var(--fonte);
+  border-bottom: 1px solid var(--aviso);
+}
+.rede__ponto { width: 9px; height: 9px; border-radius: 50%; background: currentColor; flex: none; }
+
+/* O brinde e a barra de anular vivem acima da accao ancorada, NUNCA em cima
+   dela.
+   ─────────────────────────────────────────────────────────────────────
+   Duas coisas aqui foram pagas com um teste a reprovar:
+
+   1. `pointer-events: none` no brinde. Um aviso `position: fixed` que aparece
+      por cima de um botao come os toques durante os segundos em que la esta,
+      e a pessoa carrega e nada acontece — sem uma palavra a explicar porque.
+      Um brinde e informacao: nao ha nada nele para carregar, e por isso o
+      dedo tem de o atravessar.
+
+   2. `--fundo-flutuante`, que a aplicacao levanta quando ha accao ancorada.
+      Empilhar por z-index nao resolve: o botao continua tapado, so por baixo.
+      O que se quer e que nunca se sobreponham. */
+:root { --fundo-flutuante: calc(12px + env(safe-area-inset-bottom)); }
+body:has(#accao) { --fundo-flutuante: calc(88px + env(safe-area-inset-bottom)); }
+body:has(#barra:not([hidden])) { --fundo-flutuante: calc(76px + env(safe-area-inset-bottom)); }
+
+.brinde, .desfaz {
+  position: fixed; left: 12px; right: 12px; bottom: var(--fundo-flutuante);
+  z-index: 40;
+  max-width: 560px; margin: 0 auto;
+  padding: 14px 16px; border-radius: var(--r);
+  background: var(--tinta-1); color: var(--papel-1);
+  font: 600 15px/1.4 var(--fonte);
+  box-shadow: var(--sombra-alta);
+}
+.brinde { pointer-events: none; }
+.brinde--erro { background: var(--erro); color: var(--tinta-inv); }
+
+/* A barra de anular TEM um botao, logo recebe toques — mas so ela, e nao a
+   faixa toda. */
+.desfaz { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+.desfaz__b {
+  flex: none; min-height: 44px; padding: 0 16px;
+  border: 1.5px solid currentColor; border-radius: var(--r-p);
+  background: transparent; color: inherit;
+  font: 700 15px/1 var(--fonte); cursor: pointer;
+}
+
+/* ──────────────────────── cartao de servico ──────────────────────── */
+/* O valor em euros e o maior elemento: e a primeira coisa que se procura. */
+.serv {
+  display: block;
+  background: var(--papel-2);
+  border: 1px solid var(--linha);
+  border-radius: var(--r);
+  padding: 16px;
+  text-decoration: none; color: inherit;
+  box-shadow: var(--sombra);
+  position: relative;
+}
+.serv:hover { border-color: var(--marca); }
+.serv:focus-visible { outline: 3px solid var(--foco); outline-offset: 2px; }
+.serv__topo { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; margin-bottom: 12px; }
+.serv__quando { font: 700 17px/1.3 var(--fonte); color: var(--tinta-1); }
+.serv__quando span { display: block; font: 600 14px/1.4 var(--fonte); color: var(--tinta-2); margin-top: 2px; }
+.serv__valor { text-align: right; flex: none; }
+.serv__onde { font-size: 15px; color: var(--tinta-2); margin: 0 0 12px; }
+.serv__pe { display: flex; flex-wrap: wrap; gap: 7px; align-items: center; }
+
+.vazio { text-align: center; padding: 44px 20px; }
+.vazio h2 { font-size: 1.2rem; margin: 0 0 8px; }
+.vazio p { color: var(--tinta-2); margin: 0 auto 20px; max-width: 380px; }
+.vazio__i { width: 56px; height: 56px; margin: 0 auto 18px; color: var(--tinta-3); }
+
+/* ──────────────────────── ficha do servico ──────────────────────── */
+.ficha__cabeca { margin-bottom: 20px; }
+.ficha__quando { font: 700 clamp(1.35rem, 1.2rem + .7vw, 1.7rem)/1.2 var(--fonte); margin: 0 0 6px; }
+.ficha__estado { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+
+.linhas { display: grid; gap: 0; }
+.linhas__l {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+  padding: 13px 0; border-bottom: 1px solid var(--linha);
+}
+.linhas__l:last-child { border-bottom: 0; }
+.linhas__l dt { font-size: 14.5px; color: var(--tinta-3); flex: none; }
+.linhas__l dd { margin: 0; text-align: right; font-weight: 600; font-size: 15.5px; }
+.linhas__l dd a { font-weight: 600; }
+
+/* Morada: o bloco que so aparece depois de atribuido. Destacado de proposito —
+   e a informacao por que a pessoa veio. */
+.morada { background: var(--marca-suave); border: 1px solid var(--marca); border-radius: var(--r); padding: 16px; }
+.morada h3 { margin: 0 0 10px; font-size: 15px; color: var(--marca); letter-spacing: .04em; text-transform: uppercase; }
+.morada p { margin: 0 0 6px; font-size: 17px; font-weight: 600; color: var(--tinta-1); }
+.morada .acesso {
+  margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--marca);
+  font-size: 15.5px; font-weight: 400; color: var(--tinta-1);
+}
+.morada .b { margin-top: 14px; }
+
+/* ──────────────────────── lista de tarefas ──────────────────────── */
+.zona { margin-bottom: 22px; }
+.zona__t {
+  margin: 0 0 10px; font: 700 13px/1 var(--fonte);
+  letter-spacing: .09em; text-transform: uppercase; color: var(--tinta-3);
+}
+.tarefa {
+  display: flex; align-items: center; gap: 13px;
+  width: 100%; min-height: var(--toque-campo);
+  padding: 12px 14px; margin-bottom: 8px;
+  background: var(--papel-2);
+  border: 1.5px solid var(--linha-campo); border-radius: var(--r-p);
+  font: 500 16.5px/1.35 var(--fonte); color: var(--tinta-1);
+  text-align: left; cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.tarefa:hover { border-color: var(--marca); }
+.tarefa[aria-pressed="true"] { background: var(--ok-suave); border-color: var(--ok); }
+.tarefa[aria-pressed="true"] .tarefa__t { text-decoration: line-through; color: var(--tinta-2); }
+.tarefa__c {
+  flex: none; width: 27px; height: 27px; border-radius: 7px;
+  border: 2px solid var(--linha-campo);
+  display: grid; place-items: center; color: transparent;
+}
+.tarefa[aria-pressed="true"] .tarefa__c { background: var(--ok); border-color: var(--ok); color: var(--tinta-inv); }
+.tarefa__c svg { width: 17px; height: 17px; }
+.tarefa__t { flex: 1; }
+.tarefa__foto { flex: none; width: 40px; height: 40px; border-radius: 7px; object-fit: cover; background: var(--papel-3); }
+.tarefa__pede {
+  flex: none; font: 700 11px/1 var(--fonte); letter-spacing: .04em;
+  padding: 5px 8px; border-radius: 999px;
+  background: var(--acento-suave); color: var(--acento);
+}
+.tarefa[disabled] { opacity: .6; cursor: default; }
+
+.progresso { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.progresso__b { flex: 1; height: 9px; border-radius: 999px; background: var(--papel-3); overflow: hidden; }
+.progresso__p { height: 100%; background: var(--ok); border-radius: 999px; transition: width .25s; }
+.progresso__n { font: 700 15px/1 var(--fonte); color: var(--tinta-2); font-variant-numeric: tabular-nums; }
+
+/* ──────────────────────── pessoas e reputacao ──────────────────────── */
+.pessoa { display: flex; align-items: center; gap: 13px; }
+.pessoa__f {
+  flex: none; width: 48px; height: 48px; border-radius: 50%;
+  object-fit: cover; background: var(--marca-suave);
+  display: grid; place-items: center;
+  font: 700 18px/1 var(--fonte); color: var(--marca);
+}
+.pessoa__n { font: 700 16.5px/1.3 var(--fonte); margin: 0; }
+.pessoa__m { font-size: 14px; color: var(--tinta-2); margin: 2px 0 0; display: flex; flex-wrap: wrap; gap: 4px 10px; }
+.pessoa--grande .pessoa__f { width: 68px; height: 68px; font-size: 25px; }
+.pessoa--grande .pessoa__n { font-size: 1.3rem; }
+
+.medidas { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.medida { background: var(--papel-3); border-radius: var(--r-p); padding: 14px; text-align: center; }
+.medida b { display: block; font: 700 1.5rem/1 var(--fonte); font-variant-numeric: tabular-nums; color: var(--tinta-1); }
+.medida span { display: block; font-size: 13px; color: var(--tinta-2); margin-top: 5px; line-height: 1.35; }
+
+.aval { padding: 16px 0; border-bottom: 1px solid var(--linha); }
+.aval:last-child { border-bottom: 0; }
+.aval__c { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
+.aval__q { margin: 8px 0 0; color: var(--tinta-2); font-size: 15.5px; }
+.aval__e { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+
+/* ──────────────────────── estrelas de avaliar ──────────────────────── */
+.estrelar { display: flex; gap: 6px; justify-content: center; margin: 4px 0 10px; }
+.estrelar button {
+  width: var(--toque-campo); height: var(--toque-campo);
+  border: 0; background: transparent; cursor: pointer;
+  color: var(--linha-campo); padding: 0;
+  display: grid; place-items: center;
+  -webkit-tap-highlight-color: transparent;
+}
+.estrelar button svg { width: 38px; height: 38px; }
+.estrelar button[data-on="1"] { color: var(--acento); }
+.estrelar__d { text-align: center; font: 600 16px/1.4 var(--fonte); min-height: 3em; color: var(--tinta-2); }
+
+.etiquetas { display: flex; flex-wrap: wrap; gap: 9px; }
+.etiqueta {
+  min-height: var(--toque); padding: 10px 15px;
+  border: 1.5px solid var(--linha-campo); border-radius: 999px;
+  background: var(--papel-2); color: var(--tinta-1);
+  font: 600 15px/1 var(--fonte); cursor: pointer;
+}
+.etiqueta[aria-pressed="true"] { background: var(--marca-suave); border-color: var(--marca); color: var(--marca); }
+
+/* ──────────────────────── fotografias ──────────────────────── */
+.fotos { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 8px; }
+.fotos img, .fotos a { border-radius: var(--r-p); overflow: hidden; display: block; }
+.fotos img { width: 100%; aspect-ratio: 1; object-fit: cover; background: var(--papel-3); }
+.foto-espera { position: relative; }
+.foto-espera::after {
+  content: 'a enviar'; position: absolute; inset: auto 0 0 0;
+  background: var(--aviso); color: var(--tinta-inv);
+  font: 700 10px/1 var(--fonte); text-align: center; padding: 4px 0;
+}
+
+/* ──────────────────────── dialogo ──────────────────────── */
+.veu {
+  position: fixed; inset: 0; z-index: 50;
+  background: rgba(0,0,0,.45);
+  display: grid; place-items: end center;
+  padding: 0;
+}
+.painel {
+  width: 100%; max-width: 560px;
+  background: var(--papel-1);
+  border-radius: var(--r) var(--r) 0 0;
+  padding: 22px 20px calc(22px + env(safe-area-inset-bottom));
+  max-height: 92dvh; overflow-y: auto;
+  box-shadow: var(--sombra-alta);
+}
+@media (min-width: 620px) {
+  .veu { place-items: center; padding: 20px; }
+  .painel { border-radius: var(--r); }
+}
+.painel h2 { margin: 0 0 6px; font-size: 1.3rem; }
+.painel__sub { color: var(--tinta-2); margin: 0 0 20px; }
+
+/* ──────────────────────── formularios ──────────────────────── */
+.forma { display: grid; gap: 18px; }
+.forma__t { margin: 0 0 4px; }
+.forma__sub { color: var(--tinta-2); margin: 0 0 8px; }
+.codigo {
+  font: 700 30px/1 var(--fonte); text-align: center;
+  letter-spacing: .3em; text-indent: .3em;
+  font-variant-numeric: tabular-nums;
+  min-height: 66px;
+}
+.duplo { display: grid; gap: 12px; }
+@media (min-width: 480px) { .duplo { grid-template-columns: 1fr 1fr; } }
+
+.escolhas { display: grid; gap: 10px; }
+.seg { display: flex; gap: 0; border: 1.5px solid var(--linha-campo); border-radius: var(--r-p); overflow: hidden; }
+.seg button {
+  flex: 1; min-height: var(--toque); border: 0; background: var(--papel-2);
+  color: var(--tinta-2); font: 600 15.5px/1 var(--fonte); cursor: pointer;
+  border-right: 1.5px solid var(--linha-campo);
+}
+.seg button:last-child { border-right: 0; }
+.seg button[aria-pressed="true"] { background: var(--marca); color: var(--tinta-inv); }
+
+.secc-app { margin-bottom: 26px; }
+.secc-app__t { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: 0 0 12px; }
+.secc-app__t h2 { margin: 0; font-size: 1.12rem; }
+.secc-app__t a { font-size: 15px; font-weight: 600; }
+.pilha-serv { display: grid; gap: 11px; }
+
+.conversa { display: grid; gap: 11px; margin-bottom: 18px; }
+.msg { max-width: 82%; padding: 11px 14px; border-radius: var(--r); font-size: 15.5px; line-height: 1.45; }
+.msg--eu { margin-left: auto; background: var(--marca); color: var(--tinta-inv); border-bottom-right-radius: 5px; }
+.msg--ele { background: var(--papel-2); border: 1px solid var(--linha); border-bottom-left-radius: 5px; }
+.msg__h { display: block; font-size: 11.5px; opacity: .75; margin-top: 5px; }
+
+.instala { background: var(--papel-2); border: 1px solid var(--linha); border-radius: var(--r); padding: 16px; }
+.instala h3 { margin: 0 0 8px; font-size: 1rem; }
+.instala ol { margin: 0; padding-left: 20px; color: var(--tinta-2); font-size: 15px; display: grid; gap: 6px; }
+
+mark.falta { background: var(--aviso-suave); color: var(--aviso); font-weight: 700; padding: 1px 6px; border-radius: 5px; }

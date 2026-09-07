@@ -1,0 +1,47 @@
+{
+  "_nota": "Fonte da verdade dos textos e números do site. Nada de contactos ou números escritos à mão nas páginas: sai tudo daqui, e a construção morre se faltar um campo obrigatório.",
+  "marca": {
+    "nome": "Tudo Pronto",
+    "dominio": "tudopronto.pt",
+    "tagline": "A casa pronta para o próximo hóspede.",
+    "descricao": "O Tudo Pronto liga quem tem alojamento local a profissionais de limpeza independentes. Combine a limpeza, veja as fotografias do trabalho feito, e avaliem-se um ao outro no fim.",
+    "email": "ola@tudopronto.pt",
+    "telefone": "+351 000 000 000",
+    "telefone_nota": "POR CONFIRMAR — número de apoio a preencher pelo Renato"
+  },
+  "prestador": {
+    "_nota": "DL 7/2004 art. 10.º: a identificação completa do prestador tem de aparecer no site. POR CONFIRMAR na totalidade — a construção avisa enquanto faltar.",
+    "denominacao": "POR CONFIRMAR",
+    "nif": "POR CONFIRMAR",
+    "morada": "POR CONFIRMAR",
+    "registo_comercial": "POR CONFIRMAR",
+    "capital_social": "POR CONFIRMAR"
+  },
+  "mercado": {
+    "_fonte": "RNAL / Turismo de Portugal, dados abertos, consultados a 6 de setembro de 2026.",
+    "alojamentos_continente": 111581,
+    "apartamentos": 66175,
+    "moradias": 36033,
+    "distritos_topo": [
+      {
+        "nome": "Faro",
+        "n": 44901
+      },
+      {
+        "nome": "Lisboa",
+        "n": 19064
+      },
+      {
+        "nome": "Porto",
+        "n": 14229
+      }
+    ]
+  },
+  "precos_referencia": {
+    "_nota": "APENAS PARA CONTEXTO EDITORIAL. O Tudo Pronto NÃO sugere preços dentro da aplicação: quem propõe é quem tem a casa, quem contrapõe é quem faz o trabalho. Ver o dossiê de conformidade.",
+    "_fonte": "Preços correntes de limpeza de check-out em Lisboa, 2026, sem IVA (levantamento de mercado, setembro de 2026).",
+    "faixa": "44 a 70 euros por rotação",
+    "duracao_t1": "60 a 90 minutos",
+    "duracao_t2": "90 a 120 minutos"
+  }
+}

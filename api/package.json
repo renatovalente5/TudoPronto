@@ -1,0 +1,11 @@
+{
+  "name": "tudopronto-api",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev --local --port 8787",
+    "publicar": "wrangler deploy",
+    "esquema": "wrangler d1 execute tudopronto --remote --file=./esquema.sql",
+    "esquema-local": "wrangler d1 execute tudopronto --local --file=./esquema.sql"
+  }
+}
