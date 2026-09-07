@@ -80,7 +80,7 @@ export async function correr (palco, certo) {
   certo(apareceu, 'sem rede, aparece um aviso permanente, e aparece depressa',
     'navigator.onLine = ' + await palco.js('return navigator.onLine')
     + ', #rede hidden = ' + await palco.js(`return document.querySelector('#rede')?.hidden`))
-  const aviso = await palco.texto('#rede')
+  const aviso = await palco.textoQuando('#rede')
   certo(/guardado no telemóvel/i.test(aviso) && !/sincroniz/i.test(aviso),
     'e o aviso diz o que acontece, em linguagem de gente',
     aviso)
@@ -121,9 +121,9 @@ export async function correr (palco, certo) {
       p.onsuccess = () => res(p.result.length); p.onerror = () => res(-1)
     })`)
   certo(naFila >= 1, 'e o que foi feito fica numa fila no aparelho', `${naFila} na fila`)
-  certo(/guardada|guardadas|coisa/i.test(await palco.texto('#rede')),
+  certo(/guardada|guardadas|coisa/i.test(await palco.textoQuando('#rede')),
     'o aviso passa a dizer quantas coisas estão à espera',
-    await palco.texto('#rede'))
+    await palco.textoQuando('#rede'))
 
   /* ═══ 3. a rede volta e a fila escoa ═══ */
   await palco.semRede(false)

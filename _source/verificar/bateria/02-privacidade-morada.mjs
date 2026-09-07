@@ -62,7 +62,7 @@ export async function correr (palco, certo) {
 
   /* --- 3. oferecer-se, pela interface ---------------------------------- */
   certo(await palco.visivel('#accao .b'), 'há um botão de acção ancorado')
-  const rotulo = await palco.texto('#accao .b')
+  const rotulo = await palco.textoQuando('#accao .b')
   certo(rotulo.includes('Oferecer'), 'o botão diz «Oferecer-me»', rotulo)
 
   await palco.clicar('#accao .b')

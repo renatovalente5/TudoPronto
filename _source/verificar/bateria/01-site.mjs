@@ -21,7 +21,7 @@ export async function correr (palco, certo) {
     await palco.ir(caminho)
     const t = await palco.textoTodo()
     certo(t.includes(pedaco), `${caminho} abre e diz «${pedaco}»`,
-      `título: ${await palco.texto('h1')}`)
+      `título: ${(await palco.texto('h1')) ?? '(sem h1)'}`)
     certo(await palco.ver('header.cabeca') || caminho === '/404.html',
       `${caminho} tem cabeçalho`)
     certo(await palco.ver('footer.pe'), `${caminho} tem rodapé`)

@@ -221,6 +221,19 @@ class Palco {
       return n ? n.textContent.replace(/\\s+/g, ' ').trim() : null`);
   }
 
+  /**
+   * Espera pelo elemento e devolve o texto — nunca `null`.
+   *
+   * Um `texto()` sobre um elemento que ainda não pintou devolve `null`, e um
+   * `null.includes(...)` a seguir rebenta o módulo INTEIRO em vez de reprovar
+   * uma afirmação. Passou localmente e falhou no CI, onde os tempos são
+   * outros — que é o pior sítio para descobrir isto.
+   */
+  async textoQuando(seletor, tecto = 10000) {
+    await this.esperar(seletor, tecto);
+    return (await this.texto(seletor)) ?? '';
+  }
+
   async textos(seletor) {
     return this.js(`return [...document.querySelectorAll(${JSON.stringify(seletor)})]
       .map(n => n.textContent.replace(/\\s+/g, ' ').trim())`);

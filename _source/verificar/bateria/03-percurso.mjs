@@ -104,19 +104,19 @@ export async function correr (palco, certo) {
   /* ═══ 4. o trabalho ═══ */
   await entrarComo(palco, prof, `/app/#/servico/${servId}`)
   await palco.esperar('.morada', 8000)
-  const botao1 = await palco.texto('#accao .b')
+  const botao1 = await palco.textoQuando('#accao .b')
   certo(botao1.includes('Cheguei'), 'o botão passa a «Cheguei — começar»', botao1)
 
   await palco.clicar('#accao .b')
   await palco.esperarTexto('A decorrer', 10000)
-  const botao2 = await palco.texto('#accao .b')
+  const botao2 = await palco.textoQuando('#accao .b')
   certo(botao2.includes('Tudo pronto'), 'o botão passa a «Tudo pronto»', botao2)
 
   /* A lista de tarefas aparece e conta o progresso. */
   await palco.esperar('#tarefas')
   const nTarefas = await palco.contar('.tarefa')
   certo(nTarefas >= 15, 'a lista de tarefas está no ecrã', `${nTarefas} tarefas`)
-  const progInicial = await palco.texto('#prog-n')
+  const progInicial = await palco.textoQuando('#prog-n')
   certo(/^0\//.test(progInicial), 'o progresso começa a zero', progInicial)
 
   /* Uma tarefa sem fotografia marca-se com um toque. */
@@ -130,7 +130,7 @@ export async function correr (palco, certo) {
   await palco.clicar('#alvo-sem-foto')
   certo((await palco.atributo('#alvo-sem-foto', 'aria-pressed')) === 'true',
     'um toque marca a tarefa como feita')
-  const progDepois = await palco.texto('#prog-n')
+  const progDepois = await palco.textoQuando('#prog-n')
   certo(/^1\//.test(progDepois), 'o progresso avança', progDepois)
 
   /* Tocar outra vez desmarca — o gesto é reversível. */
@@ -142,10 +142,10 @@ export async function correr (palco, certo) {
   /* Concluir com fotografias em falta é recusado, e diz-se quantas faltam. */
   await palco.clicar('#accao .b')
   await palco.esperar('#brinde', 6000)
-  const recusa = await palco.texto('#brinde')
+  const recusa = await palco.textoQuando('#brinde')
   certo(/Falta/i.test(recusa) && /fotografia/i.test(recusa),
     'concluir sem as fotografias é recusado, e diz quantas faltam', recusa)
-  certo((await palco.texto('.ficha__estado')).includes('A decorrer'),
+  certo((await palco.textoQuando('.ficha__estado')).includes('A decorrer'),
     'e a limpeza continua a decorrer')
 
   /* As fotografias: pela API, porque não há forma de o Chrome abrir a câmara.
@@ -187,13 +187,13 @@ export async function correr (palco, certo) {
   await palco.ir(`/app/#/avaliar/${servId}`)
   await palco.esperar('.estrelar')
   certo((await palco.contar('.estrelar button')) === 5, 'há cinco estrelas')
-  certo((await palco.texto('.estrelar__d')).includes('Toque nas estrelas'),
+  certo((await palco.textoQuando('.estrelar__d')).includes('Toque nas estrelas'),
     'e uma instrução antes de tocar')
   certo(await palco.js(`return document.querySelector('[data-acto="avaliar"]').disabled`),
     'o botão de enviar está desligado antes de escolher estrelas')
 
   await palco.clicar('.estrelar button:nth-child(5)')
-  const desc = await palco.texto('.estrelar__d')
+  const desc = await palco.textoQuando('.estrelar__d')
   certo(desc.includes('Tudo como combinado'), 'cada nível de estrelas tem uma frase', desc)
   certo(!(await palco.js(`return document.querySelector('[data-acto="avaliar"]').disabled`)),
     'e o botão liga-se')
