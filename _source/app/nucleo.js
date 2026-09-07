@@ -924,7 +924,9 @@ function cartaoServico (s, { comDono, comProfissional } = {}) {
 
   const pe = el('div', { classe: 'serv__pe' }, distEstado(s.estado))
   if (s.distancia_km !== null && s.distancia_km !== undefined) {
-    pe.append(dist(`${s.distancia_km} km`, 'marca'))
+    // A distância é entre CENTRÓIDES de concelho. No mesmo concelho dá zero, e
+    // «0 km» lê-se como um erro — ninguém está a zero quilómetros de nada.
+    pe.append(dist(s.distancia_km === 0 ? 'no seu concelho' : `${s.distancia_km} km`, 'marca'))
   }
   if (s.muda_roupa) pe.append(dist('muda roupa'))
   if (s.tipo && s.tipo !== 'saida') pe.append(dist(s.tipo_nome || s.tipo))
@@ -1175,7 +1177,11 @@ async function ecraServico (id) {
   linha('Zona', [a.freguesia, a.concelho, a.distrito].filter(Boolean).join(', '))
   if (a.andar && !a.morada) linha('Andar', a.tem_elevador ? 'com elevador' : 'sem elevador')
   else if (a.morada) linha('Elevador', a.tem_elevador ? 'sim' : 'não')
-  if (s.distancia_km !== null && s.distancia_km !== undefined) linha('Distância', `cerca de ${s.distancia_km} km`)
+  if (s.distancia_km !== null && s.distancia_km !== undefined) {
+    linha('Distância', s.distancia_km === 0
+      ? 'no seu concelho'
+      : `cerca de ${s.distancia_km} km`)
+  }
   linha('Roupa de cama', s.muda_roupa
     ? `muda · fornecida ${{ alojamento: 'pela casa', profissional: 'por quem limpa', lavandaria: 'por lavandaria' }[s.roupa_de]}`
     : 'não é preciso mudar')
@@ -2575,8 +2581,9 @@ function pintarBarra () {
   const r = rotaActual()
   const souDono = !!E.conta?.e_dono
   const souProf = !!E.conta?.e_profissional
-  // Tres destinos, no maximo. Cada destino a mais e uma decisao a mais para
-  // quem abre isto duas vezes por semana.
+  // Quatro destinos, e nao mais. Cada destino a mais e uma decisao a mais para
+  // quem abre isto duas vezes por semana — e a barra nao ganha um quinto sem
+  // se tirar um dos que ca estao.
   const destinos = souDono
     ? [['#/', 'Limpezas', I.lista], ['#/alojamentos', 'Casas', I.casa], ['#/equipa', 'Equipa', I.pessoas], ['#/eu', 'Conta', I.eu]]
     : [['#/', 'Limpezas', I.lista], ['#/mercado', 'Perto', I.lupa], ['#/equipa', 'Equipa', I.pessoas], ['#/eu', 'Conta', I.eu]]

@@ -10,7 +10,7 @@
 //     apanharia o site de apresentacao tambem, e a pagina inicial passaria a
 //     ser servida da cache com a aplicacao no lugar dela.
 
-const VERSAO = 'fa2744f7'
+const VERSAO = '7192402a'
 const CACHE = `tudopronto-${VERSAO}`
 const PREFIXO = '/TudoPronto'
 

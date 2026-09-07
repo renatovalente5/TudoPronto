@@ -29,7 +29,14 @@ export async function correr (palco, certo) {
     'o mercado NÃO mostra a morada', noMercado.slice(0, 300))
   certo(!noMercado.includes(CODIGO),
     'o mercado NÃO mostra o código da caixa de chaves')
-  certo(/\d+\s*km/.test(noMercado), 'o mercado mostra a distância aproximada')
+  /* Mede-se o DISTINTIVO do cartão, e não a página toda: o cabeçalho diz
+     «até 15 km de Ovar» (o raio), e um teste que procure dígitos seguidos de
+     «km» em qualquer parte da página passa por acidente mesmo que o cartão
+     não mostre distância nenhuma. */
+  const distintivos = await palco.textos('.serv .dist')
+  certo(distintivos.some(d => /\d+\s*km/.test(d) || /no seu concelho/.test(d)),
+    'o cartão do mercado mostra a distância aproximada (ou «no seu concelho»)',
+    distintivos.join(' | '))
   certo(noMercado.includes('54'), 'o mercado mostra o valor oferecido')
 
   /* --- 2. a ficha, antes de ser escolhida ------------------------------- */

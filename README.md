@@ -89,7 +89,7 @@ Daí:
   *Tudo pronto*;
 - 44 px de piso para tudo o que se toca, 24 px de folga obrigatória entre uma
   acção positiva e uma destrutiva, e nunca as duas na mesma linha;
-- registo em quatro campos; sem menu escondido; três destinos na barra;
+- registo em quatro campos; sem menu escondido; quatro destinos na barra;
 - «Feito. Anular» durante 15 segundos em vez de «tem a certeza?» antes;
 - 17 px de corpo mínimo, e o layout aguenta letra a 200 %;
 - contraste medido por programa — e medido **outra vez** no browser, depois de
