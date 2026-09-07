@@ -107,7 +107,7 @@ function rotasConta (api) {
     const concelho = texto(corpo.concelho, { campo: 'concelho', max: 60, obrigatorio: eProf })
 
     const jaExiste = await env.BD.prepare('SELECT id FROM contas WHERE email = ?1').bind(endereco).first()
-    if (jaExiste) erro(409, 'Ja existe uma conta com esse email. Experimente entrar.', 'email')
+    if (jaExiste) erro(409, 'Já existe uma conta com esse email. Experimente entrar.', 'email')
 
     const { senha_sal, senha_hash } = await guardarSenha(chave)
     const id = novoId()
@@ -198,7 +198,7 @@ function rotasConta (api) {
       const cod = await criarCodigo(env, endereco, fim)
       await enviar(env, { para: endereco, nome: c.nome, ...modelos.codigo(cod, fim) })
     }
-    return json({ ok: true, mensagem: 'Se essa conta existir, o codigo ja vai a caminho.' })
+    return json({ ok: true, mensagem: 'Se essa conta existir, o código já vai a caminho.' })
   })
 
   api.post('/v1/codigo/validar', async ({ env, pedido, corpo }) => {
@@ -215,7 +215,7 @@ function rotasConta (api) {
     const chave = chaveDerivada(corpo.senha)
     await validarCodigo(env, endereco, 'recuperar', corpo.codigo)
     const c = await env.BD.prepare('SELECT id FROM contas WHERE email = ?1').bind(endereco).first()
-    if (!c) erro(400, 'Nao foi possivel concluir. Peca um novo codigo.')
+    if (!c) erro(400, 'Não foi possível concluir. Peça um novo código.')
     const { senha_sal, senha_hash } = await guardarSenha(chave)
     await env.BD.prepare(
       'UPDATE contas SET senha_hash = ?2, senha_sal = ?3, email_verificado = 1 WHERE id = ?1'
@@ -295,7 +295,7 @@ function rotasFotos (api) {
     const bytes = await pedido.arrayBuffer()
     if (!bytes.byteLength) erro(400, 'A fotografia chegou vazia. Tente outra vez.')
     if (bytes.byteLength > MAX_FOTO) {
-      erro(413, 'Essa fotografia e demasiado grande. A aplicacao reduz as fotografias antes de enviar — actualize a pagina e tente outra vez.')
+      erro(413, 'Essa fotografia é demasiado grande. A aplicação reduz as fotografias antes de enviar — actualize a página e tente outra vez.')
     }
     const url = new URL(pedido.url)
     const fim = daLista(url.searchParams.get('fim'),
@@ -306,8 +306,8 @@ function rotasFotos (api) {
       const s = await env.BD.prepare(
         'SELECT dono_id, profissional_id FROM servicos WHERE id = ?1'
       ).bind(servicoId).first()
-      if (!s) erro(404, 'Esse servico ja nao existe.')
-      if (s.dono_id !== c.id && s.profissional_id !== c.id) erro(403, 'Esse servico nao e seu.')
+      if (!s) erro(404, 'Esse serviço já não existe.')
+      if (s.dono_id !== c.id && s.profissional_id !== c.id) erro(403, 'Esse serviço não é seu.')
     }
 
     const id = novoId()
@@ -325,9 +325,9 @@ function rotasFotos (api) {
   // testemunho em cada <img> — poe a sessao no historico e nos registos.
   // Cache longa: o id nunca aponta para outra imagem.
   api.get('/f/:id', async ({ env, params }) => {
-    if (!/^[0-9a-f]{32}$/.test(params.id)) erro(404, 'Nao encontrado.')
+    if (!/^[0-9a-f]{32}$/.test(params.id)) erro(404, 'Não encontrado.')
     const o = await env.FOTOS.getWithMetadata(params.id, { type: 'arrayBuffer' })
-    if (!o || !o.value) erro(404, 'Essa fotografia ja nao existe.')
+    if (!o || !o.value) erro(404, 'Essa fotografia já não existe.')
     return new Response(o.value, {
       headers: {
         'Content-Type': o.metadata?.tipo || 'image/jpeg',
@@ -356,7 +356,7 @@ export default {
     }
 
     try {
-      if (!env.BD) erro(503, 'Servico indisponivel de momento.')
+      if (!env.BD) erro(503, 'Serviço indisponível de momento.')
       for (const r of ROTAS) {
         if (r.metodo !== pedido.method) continue
         const params = casa(r.padrao, caminho)
@@ -370,7 +370,7 @@ export default {
         for (const [k, v] of Object.entries(cors)) resposta.headers.set(k, v)
         return resposta
       }
-      erro(404, 'Nao encontrado.')
+      erro(404, 'Não encontrado.')
     } catch (e) {
       if (e instanceof Erro) {
         return json({ erro: e.message, campo: e.campo }, e.estado, cors)

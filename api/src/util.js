@@ -111,10 +111,10 @@ export function texto (v, { campo, min = 0, max = 2000, obrigatorio = true } = {
     if (obrigatorio) erro(400, `Falta preencher: ${campo}.`, campo)
     return null
   }
-  if (typeof v !== 'string') erro(400, `${campo}: valor invalido.`, campo)
+  if (typeof v !== 'string') erro(400, `${campo}: valor inválido.`, campo)
   const s = v.trim().normalize('NFC')
   if (s.length < min) erro(400, `${campo}: escreva pelo menos ${min} caracteres.`, campo)
-  if (s.length > max) erro(400, `${campo}: no maximo ${max} caracteres.`, campo)
+  if (s.length > max) erro(400, `${campo}: no máximo ${max} caracteres.`, campo)
   return s
 }
 
@@ -124,7 +124,7 @@ export function inteiro (v, { campo, min = 0, max = 1e9, obrigatorio = true, omi
     return omissao
   }
   const n = Number(v)
-  if (!Number.isInteger(n)) erro(400, `${campo}: tem de ser um numero inteiro.`, campo)
+  if (!Number.isInteger(n)) erro(400, `${campo}: tem de ser um número inteiro.`, campo)
   if (n < min || n > max) erro(400, `${campo}: tem de estar entre ${min} e ${max}.`, campo)
   return n
 }
@@ -139,7 +139,7 @@ export function daLista (v, lista, { campo, obrigatorio = true, omissao = null }
     if (obrigatorio) erro(400, `Falta escolher: ${campo}.`, campo)
     return omissao
   }
-  if (!lista.includes(v)) erro(400, `${campo}: valor nao permitido.`, campo)
+  if (!lista.includes(v)) erro(400, `${campo}: valor não permitido.`, campo)
   return v
 }
 
@@ -147,7 +147,7 @@ export function daLista (v, lista, { campo, obrigatorio = true, omissao = null }
  *  forma minima e normalizo para minusculas, que e o que a base espera. */
 export function email (v) {
   const s = texto(v, { campo: 'email', max: 254 }).toLowerCase()
-  if (!/^[^\s@]+@[^\s@.]+(\.[^\s@.]+)+$/.test(s)) erro(400, 'Esse endereco de email nao parece valido.', 'email')
+  if (!/^[^\s@]+@[^\s@.]+(\.[^\s@.]+)+$/.test(s)) erro(400, 'Esse endereco de email não parece valido.', 'email')
   return s
 }
 
@@ -155,7 +155,7 @@ export function data (v, campo = 'data') {
   const s = texto(v, { campo })
   if (!/^\d{4}-\d{2}-\d{2}$/.test(s)) erro(400, `${campo}: use o formato AAAA-MM-DD.`, campo)
   const d = new Date(s + 'T12:00:00Z')
-  if (Number.isNaN(d.getTime())) erro(400, `${campo}: essa data nao existe.`, campo)
+  if (Number.isNaN(d.getTime())) erro(400, `${campo}: essa data não existe.`, campo)
   return s
 }
 
@@ -169,7 +169,7 @@ export function hora (v, campo = 'hora') {
 export function telefone (v, obrigatorio = false) {
   if (!v) { if (obrigatorio) erro(400, 'Falta o telefone.', 'telefone'); return null }
   const s = String(v).replace(/[\s.\-()]/g, '')
-  if (!/^(\+\d{6,15}|\d{9})$/.test(s)) erro(400, 'Escreva 9 algarismos, ou +351 e o numero.', 'telefone')
+  if (!/^(\+\d{6,15}|\d{9})$/.test(s)) erro(400, 'Escreva 9 algarismos, ou +351 e o número.', 'telefone')
   return s.startsWith('+') ? s : '+351' + s
 }
 
@@ -201,7 +201,7 @@ export async function travar (env, pedido, acao, tecto, janelaMin = 60) {
   const dia = AGORA().slice(0, 10)
   // O sal do dia sai de um segredo. Sem segredo, o travao NAO abre: falhar
   // aberto num travao de abuso e nao ter travao nenhum.
-  if (!env.SAL_TRAVAO) erro(503, 'Servico indisponivel de momento. Tente daqui a pouco.')
+  if (!env.SAL_TRAVAO) erro(503, 'Serviço indisponível de momento. Tente daqui a pouco.')
   const chave = await sha256(`${env.SAL_TRAVAO}|${dia}|${acao}|${prefixoIP(ip)}`)
   const agora = AGORA()
   const limite = new Date(Date.now() - janelaMin * 60000).toISOString()

@@ -44,8 +44,8 @@ export function alojamentoCompleto (a) {
 
 async function meuAlojamento (env, dono, id) {
   const a = await env.BD.prepare('SELECT * FROM alojamentos WHERE id = ?1').bind(id).first()
-  if (!a) erro(404, 'Esse alojamento ja nao existe.')
-  if (a.dono_id !== dono.id) erro(403, 'Esse alojamento nao e seu.')
+  if (!a) erro(404, 'Esse alojamento já não existe.')
+  if (a.dono_id !== dono.id) erro(403, 'Esse alojamento não é seu.')
   return a
 }
 
@@ -66,7 +66,7 @@ function lerCampos (corpo, obrigatorios) {
     concelho,
     freguesia: texto(corpo.freguesia, { campo: 'freguesia', max: 80, obrigatorio: false }),
     morada: texto(corpo.morada, { campo: 'morada', min: 5, max: 200, obrigatorio: obrigatorios }),
-    codigo_postal: texto(corpo.codigo_postal, { campo: 'codigo postal', max: 12, obrigatorio: false }),
+    codigo_postal: texto(corpo.codigo_postal, { campo: 'código postal', max: 12, obrigatorio: false }),
     acesso: texto(corpo.acesso, { campo: 'acesso', max: 500, obrigatorio: false }),
     instrucoes: texto(corpo.instrucoes, { campo: 'instrucoes', max: 2000, obrigatorio: false }),
     registo_al: texto(corpo.registo_al, { campo: 'registo AL', max: 40, obrigatorio: false }),
@@ -93,25 +93,25 @@ function lerCampos (corpo, obrigatorios) {
 // na sua casa e quem tem a casa. Isto tem de continuar verdadeiro na interface
 // (onde a lista aparece como "a sua lista, pode mudar tudo") e nos termos.
 export const RASCUNHO_SUGERIDO = [
-  ['Cozinha', 'Loica lavada e arrumada', 0],
-  ['Cozinha', 'Frigorifico vazio e limpo por dentro', 1],
-  ['Cozinha', 'Fogao, forno e micro-ondas sem gordura', 1],
+  ['Cozinha', 'Loiça lavada e arrumada', 0],
+  ['Cozinha', 'Frigorífico vazio e limpo por dentro', 1],
+  ['Cozinha', 'Fogão, forno e micro-ondas sem gordura', 1],
   ['Cozinha', 'Lixo despejado e saco novo', 0],
-  ['Cozinha', 'Bancadas e lava-loica limpos', 0],
-  ['Quartos', 'Lencois e fronhas mudados', 1],
+  ['Cozinha', 'Bancadas e lava-loiça limpos', 0],
+  ['Quartos', 'Lençóis e fronhas mudados', 1],
   ['Quartos', 'Camas feitas', 1],
   ['Quartos', 'Roupeiros vazios e limpos', 0],
-  ['Quartos', 'Chao aspirado e lavado', 0],
-  ['Casa de banho', 'Sanita, chuveiro e lavatorio lavados', 1],
+  ['Quartos', 'Chão aspirado e lavado', 0],
+  ['Casa de banho', 'Sanita, chuveiro e lavatório lavados', 1],
   ['Casa de banho', 'Toalhas mudadas', 1],
   ['Casa de banho', 'Espelho sem marcas', 0],
-  ['Casa de banho', 'Papel higienico e sabonete repostos', 0],
-  ['Sala', 'Sofas e almofadas arrumados', 0],
-  ['Sala', 'Superficies sem po', 0],
-  ['Sala', 'Chao aspirado e lavado', 0],
+  ['Casa de banho', 'Papel higiénico e sabonete repostos', 0],
+  ['Sala', 'Sofás e almofadas arrumados', 0],
+  ['Sala', 'Superfícies sem pó', 0],
+  ['Sala', 'Chão aspirado e lavado', 0],
   ['Geral', 'Janelas e vidros interiores sem marcas', 0],
   ['Geral', 'Ar renovado e casa a cheirar bem', 0],
-  ['Geral', 'Luzes, torneiras e electrodomesticos a funcionar', 0],
+  ['Geral', 'Luzes, torneiras e electrodomésticos a funcionar', 0],
   ['Geral', 'Fotografia final da casa pronta', 1],
 ]
 
@@ -172,7 +172,7 @@ export function rotasAlojamentos (api) {
       campos.push(`${k} = ?${campos.length + 1}`)
       vals.push(v)
     }
-    if (!campos.length) erro(400, 'Nao ha nada para mudar.')
+    if (!campos.length) erro(400, 'Não há nada para mudar.')
     vals.push(params.id)
     await env.BD.prepare(`UPDATE alojamentos SET ${campos.join(', ')} WHERE id = ?${vals.length}`).bind(...vals).run()
     const a = await env.BD.prepare('SELECT * FROM alojamentos WHERE id = ?1').bind(params.id).first()
@@ -208,7 +208,7 @@ export function rotasAlojamentos (api) {
     const c = await exigirDono(env, pedido)
     await meuAlojamento(env, c, params.id)
     const lista = Array.isArray(corpo.tarefas) ? corpo.tarefas : erro(400, 'Falta a lista de tarefas.')
-    if (lista.length > 120) erro(400, 'Sao demasiadas tarefas (maximo 120).')
+    if (lista.length > 120) erro(400, 'Sao demasiadas tarefas (máximo 120).')
     const limpas = lista.map((t, i) => ({
       id: novoId(),
       zona: texto(t.zona, { campo: 'zona', max: 40 }),

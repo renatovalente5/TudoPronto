@@ -31,6 +31,9 @@ jobs:
       - name: Construir
         run: node _source/construir.mjs
 
+      - name: Portugues do texto visivel
+        run: node _source/verificar/portugues.mjs
+
       - name: Preparar a base local do Worker
         working-directory: api
         run: npx --yes wrangler@latest d1 execute tudopronto --local --file=./esquema.sql -y

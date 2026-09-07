@@ -25,7 +25,7 @@ export const ITERACOES_CLIENTE = 600000   // o cliente le isto de /v1/parametros
 export function chaveDerivada (v) {
   const s = texto(v, { campo: 'senha', min: 43, max: 64 })
   if (!/^[A-Za-z0-9_-]{43}$/.test(s)) {
-    erro(400, 'Nao foi possivel processar a senha. Actualize a pagina e tente outra vez.', 'senha')
+    erro(400, 'Não foi possível processar a senha. Actualize a página e tente outra vez.', 'senha')
   }
   return s
 }
@@ -132,17 +132,17 @@ export async function validarCodigo (env, endereco, fim, codigo) {
      ORDER BY criado_em DESC LIMIT 1`
   ).bind(endereco, fim).first()
 
-  if (!l) erro(400, 'Esse codigo ja nao serve. Peca um novo.')
-  if (l.expira_em < AGORA()) erro(400, `O codigo expirou (vale ${VALIDADE_CODIGO_MIN} minutos). Peca um novo.`)
-  if (l.tentativas >= MAX_TENTATIVAS) erro(429, 'Errou o codigo demasiadas vezes. Peca um novo.')
+  if (!l) erro(400, 'Esse código já não serve. Peça um novo.')
+  if (l.expira_em < AGORA()) erro(400, `O código expirou (vale ${VALIDADE_CODIGO_MIN} minutos). Peça um novo.`)
+  if (l.tentativas >= MAX_TENTATIVAS) erro(429, 'Errou o código demasiadas vezes. Peça um novo.')
 
   const certo = iguais(await sha256(`${endereco}|${fim}|${String(codigo).trim()}`), l.codigo_hash)
   if (!certo) {
     await env.BD.prepare('UPDATE codigos SET tentativas = tentativas + 1 WHERE id = ?1').bind(l.id).run()
     const restam = MAX_TENTATIVAS - l.tentativas - 1
     erro(400, restam > 0
-      ? `Codigo errado. ${restam === 1 ? 'Resta 1 tentativa' : `Restam ${restam} tentativas`}.`
-      : 'Codigo errado. Peca um novo codigo.')
+      ? `Código errado. ${restam === 1 ? 'Resta 1 tentativa' : `Restam ${restam} tentativas`}.`
+      : 'Código errado. Peça um novo código.')
   }
   await env.BD.prepare('UPDATE codigos SET usado_em = ?2 WHERE id = ?1').bind(l.id, AGORA()).run()
   return true

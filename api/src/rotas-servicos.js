@@ -30,7 +30,7 @@ const ORIGEM_PRODUTOS = ['alojamento', 'profissional']
 const NOME_TIPO = {
   saida: 'Limpeza de saida',
   profunda: 'Limpeza profunda',
-  preparacao: 'Preparacao para hospedes',
+  preparacao: 'Preparação para hóspedes',
   manutencao: 'Manutencao',
 }
 
@@ -44,7 +44,7 @@ async function carregar (env, conta, id) {
       FROM servicos s JOIN alojamentos a ON a.id = s.alojamento_id
      WHERE s.id = ?1`
   ).bind(id).first()
-  if (!s) erro(404, 'Essa limpeza ja nao existe.')
+  if (!s) erro(404, 'Essa limpeza já não existe.')
   const papel = s.dono_id === conta.id ? 'dono'
     : s.profissional_id === conta.id ? 'profissional'
     : null
@@ -111,16 +111,16 @@ export function rotasServicos (api) {
     const a = await env.BD.prepare(
       'SELECT * FROM alojamentos WHERE id = ?1'
     ).bind(texto(corpo.alojamento_id, { campo: 'alojamento' })).first()
-    if (!a) erro(404, 'Esse alojamento ja nao existe.')
-    if (a.dono_id !== c.id) erro(403, 'Esse alojamento nao e seu.')
-    if (a.arquivado) erro(400, 'Esse alojamento esta arquivado.')
+    if (!a) erro(404, 'Esse alojamento já não existe.')
+    if (a.dono_id !== c.id) erro(403, 'Esse alojamento não é seu.')
+    if (a.arquivado) erro(400, 'Esse alojamento está arquivado.')
 
     const dia = validarData(corpo.data)
     const inicio = hora(corpo.hora_inicio, 'hora de entrada')
     const limite = hora(corpo.hora_limite, 'hora limite')
     if (limite <= inicio) erro(400, 'A hora limite tem de ser depois da hora de entrada.', 'hora_limite')
     // Marcar para ontem so pode ser engano.
-    if (dia < AGORA().slice(0, 10)) erro(400, 'Essa data ja passou.', 'data')
+    if (dia < AGORA().slice(0, 10)) erro(400, 'Essa data já passou.', 'data')
 
     const visibilidade = daLista(corpo.visibilidade, ['mercado', 'equipa', 'directo'],
       { campo: 'visibilidade', obrigatorio: false, omissao: 'mercado' })
@@ -133,7 +133,7 @@ export function rotasServicos (api) {
       const naEquipa = await env.BD.prepare(
         "SELECT id FROM equipa WHERE dono_id = ?1 AND profissional_id = ?2 AND estado = 'activa'"
       ).bind(c.id, directoPara).first()
-      if (!naEquipa) erro(400, 'Essa pessoa nao esta na sua equipa.')
+      if (!naEquipa) erro(400, 'Essa pessoa não está na sua equipa.')
       profissionalId = directoPara
     }
 
@@ -229,7 +229,7 @@ export function rotasServicos (api) {
     // Quem nao esta no servico so o ve se ele estiver aberto no mercado — e ai
     // ve a versao publica, sem morada.
     if (!papel && !(s.estado === 'aberto' && s.visibilidade === 'mercado')) {
-      erro(403, 'Nao tem acesso a esta limpeza.')
+      erro(403, 'Não tem acesso a esta limpeza.')
     }
     const extras = {}
     if (papel === 'dono' && s.estado === 'aberto') {
@@ -282,9 +282,9 @@ export function rotasServicos (api) {
   api.patch('/v1/servicos/:id', async ({ env, pedido, params, corpo }) => {
     const c = await exigirDono(env, pedido)
     const { s, papel } = await carregar(env, c, params.id)
-    if (papel !== 'dono') erro(403, 'Essa limpeza nao e sua.')
+    if (papel !== 'dono') erro(403, 'Essa limpeza não é sua.')
     if (!['aberto', 'atribuido'].includes(s.estado)) {
-      erro(400, 'Ja nao da para mudar esta limpeza.')
+      erro(400, 'Já não da para mudar esta limpeza.')
     }
     const campos = []
     const vals = []
@@ -300,7 +300,7 @@ export function rotasServicos (api) {
     if (corpo.repor_consumiveis !== undefined) por('repor_consumiveis', booleano(corpo.repor_consumiveis) ? 1 : 0)
     if (corpo.produtos_de !== undefined) por('produtos_de', daLista(corpo.produtos_de, ORIGEM_PRODUTOS, { campo: 'produtos' }))
     if (corpo.aceita_primeira !== undefined) por('aceita_primeira', booleano(corpo.aceita_primeira) ? 1 : 0)
-    if (!campos.length) erro(400, 'Nao ha nada para mudar.')
+    if (!campos.length) erro(400, 'Não há nada para mudar.')
     vals.push(s.id)
     await env.BD.prepare(`UPDATE servicos SET ${campos.join(', ')} WHERE id = ?${vals.length}`).bind(...vals).run()
 
@@ -321,8 +321,8 @@ export function rotasServicos (api) {
   api.post('/v1/servicos/:id/cancelar', async ({ env, pedido, params, corpo }) => {
     const c = await exigirConta(env, pedido)
     const { s, papel } = await carregar(env, c, params.id)
-    if (!papel) erro(403, 'Essa limpeza nao e sua.')
-    if (['concluido', 'cancelado'].includes(s.estado)) erro(400, 'Essa limpeza ja esta fechada.')
+    if (!papel) erro(403, 'Essa limpeza não é sua.')
+    if (['concluido', 'cancelado'].includes(s.estado)) erro(400, 'Essa limpeza já está fechada.')
     const motivo = texto(corpo.motivo, { campo: 'motivo', max: 300, obrigatorio: false })
     await env.BD.prepare(
       "UPDATE servicos SET estado = 'cancelado', cancelado_por = ?2, motivo_cancelamento = ?3 WHERE id = ?1"
@@ -402,14 +402,14 @@ export function rotasServicos (api) {
   api.post('/v1/servicos/:id/candidatar', async ({ env, pedido, params, corpo }) => {
     const c = await exigirProfissional(env, pedido)
     const { s } = await carregar(env, c, params.id)
-    if (s.estado !== 'aberto') erro(400, 'Essa limpeza ja nao esta disponivel.')
-    if (s.dono_id === c.id) erro(400, 'Nao pode candidatar-se a sua propria limpeza.')
+    if (s.estado !== 'aberto') erro(400, 'Essa limpeza já não está disponível.')
+    if (s.dono_id === c.id) erro(400, 'Não pode candidatar-se a sua própria limpeza.')
     if (s.visibilidade === 'directo') erro(400, 'Essa limpeza foi entregue a outra pessoa.')
     if (s.visibilidade === 'equipa') {
       const naEquipa = await env.BD.prepare(
         "SELECT id FROM equipa WHERE dono_id = ?1 AND profissional_id = ?2 AND estado = 'activa'"
       ).bind(s.dono_id, c.id).first()
-      if (!naEquipa) erro(403, 'Essa limpeza e so para a equipa deste anfitriao.')
+      if (!naEquipa) erro(403, 'Essa limpeza é só para a equipa deste anfitrião.')
     }
     const valor = inteiro(corpo.valor, { campo: 'valor', min: 0, max: 100000, obrigatorio: false })
     const mensagem = texto(corpo.mensagem, { campo: 'mensagem', max: 500, obrigatorio: false })
@@ -417,7 +417,7 @@ export function rotasServicos (api) {
     const ja = await env.BD.prepare(
       'SELECT id, estado FROM candidaturas WHERE servico_id = ?1 AND profissional_id = ?2'
     ).bind(s.id, c.id).first()
-    if (ja && ja.estado === 'pendente') erro(409, 'Ja se candidatou a esta limpeza.')
+    if (ja && ja.estado === 'pendente') erro(409, 'Já se candidatou a esta limpeza.')
 
     const id = ja ? ja.id : novoId()
     const agora = AGORA()
@@ -452,9 +452,9 @@ export function rotasServicos (api) {
   api.del('/v1/candidaturas/:id', async ({ env, pedido, params }) => {
     const c = await exigirProfissional(env, pedido)
     const x = await env.BD.prepare('SELECT * FROM candidaturas WHERE id = ?1').bind(params.id).first()
-    if (!x) erro(404, 'Essa candidatura ja nao existe.')
-    if (x.profissional_id !== c.id) erro(403, 'Essa candidatura nao e sua.')
-    if (x.estado !== 'pendente') erro(400, 'Essa candidatura ja foi respondida.')
+    if (!x) erro(404, 'Essa candidatura já não existe.')
+    if (x.profissional_id !== c.id) erro(403, 'Essa candidatura não é sua.')
+    if (x.estado !== 'pendente') erro(400, 'Essa candidatura já foi respondida.')
     await env.BD.prepare("UPDATE candidaturas SET estado = 'retirada', respondida_em = ?2 WHERE id = ?1")
       .bind(x.id, AGORA()).run()
     return json({ ok: true })
@@ -463,22 +463,22 @@ export function rotasServicos (api) {
   api.post('/v1/candidaturas/:id/aceitar', async ({ env, pedido, params }) => {
     const c = await exigirDono(env, pedido)
     const x = await env.BD.prepare('SELECT * FROM candidaturas WHERE id = ?1').bind(params.id).first()
-    if (!x) erro(404, 'Essa candidatura ja nao existe.')
+    if (!x) erro(404, 'Essa candidatura já não existe.')
     const { s, papel } = await carregar(env, c, x.servico_id)
-    if (papel !== 'dono') erro(403, 'Essa limpeza nao e sua.')
-    if (s.estado !== 'aberto') erro(400, 'Essa limpeza ja foi atribuida.')
-    if (x.estado !== 'pendente') erro(400, 'Essa candidatura ja foi respondida.')
+    if (papel !== 'dono') erro(403, 'Essa limpeza não é sua.')
+    if (s.estado !== 'aberto') erro(400, 'Essa limpeza já foi atribuída.')
+    if (x.estado !== 'pendente') erro(400, 'Essa candidatura já foi respondida.')
     const ok = await atribuir(env, s, x.profissional_id, x.id)
-    if (!ok) erro(409, 'Essa limpeza acabou de ser atribuida a outra pessoa.')
+    if (!ok) erro(409, 'Essa limpeza acabou de ser atribuída a outra pessoa.')
     return json({ ok: true })
   })
 
   api.post('/v1/candidaturas/:id/recusar', async ({ env, pedido, params }) => {
     const c = await exigirDono(env, pedido)
     const x = await env.BD.prepare('SELECT * FROM candidaturas WHERE id = ?1').bind(params.id).first()
-    if (!x) erro(404, 'Essa candidatura ja nao existe.')
+    if (!x) erro(404, 'Essa candidatura já não existe.')
     const s = await env.BD.prepare('SELECT dono_id FROM servicos WHERE id = ?1').bind(x.servico_id).first()
-    if (!s || s.dono_id !== c.id) erro(403, 'Essa limpeza nao e sua.')
+    if (!s || s.dono_id !== c.id) erro(403, 'Essa limpeza não é sua.')
     await env.BD.prepare("UPDATE candidaturas SET estado = 'recusada', respondida_em = ?2 WHERE id = ?1")
       .bind(x.id, AGORA()).run()
     return json({ ok: true })
@@ -489,8 +489,8 @@ export function rotasServicos (api) {
   api.post('/v1/servicos/:id/iniciar', async ({ env, pedido, params }) => {
     const c = await exigirConta(env, pedido)
     const { s, papel } = await carregar(env, c, params.id)
-    if (papel !== 'profissional') erro(403, 'So quem vai fazer a limpeza pode comecar.')
-    if (s.estado !== 'atribuido') erro(400, 'Essa limpeza nao esta por comecar.')
+    if (papel !== 'profissional') erro(403, 'Só quem vai fazer a limpeza pode começar.')
+    if (s.estado !== 'atribuido') erro(400, 'Essa limpeza não está por começar.')
     await env.BD.prepare("UPDATE servicos SET estado = 'a_decorrer', iniciado_em = ?2 WHERE id = ?1")
       .bind(s.id, AGORA()).run()
     await avisar(env, s.dono_id, {
@@ -505,11 +505,11 @@ export function rotasServicos (api) {
   api.post('/v1/servicos/:id/tarefas/:tid', async ({ env, pedido, params, corpo }) => {
     const c = await exigirConta(env, pedido)
     const { s, papel } = await carregar(env, c, params.id)
-    if (papel !== 'profissional') erro(403, 'So quem esta a fazer a limpeza pode marcar tarefas.')
-    if (!['atribuido', 'a_decorrer'].includes(s.estado)) erro(400, 'Essa limpeza ja esta fechada.')
+    if (papel !== 'profissional') erro(403, 'Só quem esta a fazer a limpeza pode marcar tarefas.')
+    if (!['atribuido', 'a_decorrer'].includes(s.estado)) erro(400, 'Essa limpeza já está fechada.')
     const t = await env.BD.prepare('SELECT * FROM tarefas WHERE id = ?1 AND servico_id = ?2')
       .bind(params.tid, s.id).first()
-    if (!t) erro(404, 'Essa tarefa nao existe.')
+    if (!t) erro(404, 'Essa tarefa não existe.')
 
     const feita = booleano(corpo.feita, true)
     const fotoId = texto(corpo.foto_id, { campo: 'foto', max: 40, obrigatorio: false })
@@ -529,8 +529,8 @@ export function rotasServicos (api) {
   api.post('/v1/servicos/:id/concluir', async ({ env, pedido, params }) => {
     const c = await exigirConta(env, pedido)
     const { s, papel } = await carregar(env, c, params.id)
-    if (papel !== 'profissional') erro(403, 'So quem fez a limpeza pode dar por terminada.')
-    if (!['atribuido', 'a_decorrer'].includes(s.estado)) erro(400, 'Essa limpeza ja esta fechada.')
+    if (papel !== 'profissional') erro(403, 'Só quem fez a limpeza pode dar por terminada.')
+    if (!['atribuido', 'a_decorrer'].includes(s.estado)) erro(400, 'Essa limpeza já está fechada.')
 
     const porFazer = await env.BD.prepare(
       'SELECT COUNT(*) n FROM tarefas WHERE servico_id = ?1 AND exige_foto = 1 AND (feita_em IS NULL OR foto_id IS NULL)'
@@ -566,7 +566,7 @@ export function rotasServicos (api) {
   api.post('/v1/servicos/:id/ocorrencias', async ({ env, pedido, params, corpo }) => {
     const c = await exigirConta(env, pedido)
     const { s, papel } = await carregar(env, c, params.id)
-    if (!papel) erro(403, 'Essa limpeza nao e sua.')
+    if (!papel) erro(403, 'Essa limpeza não é sua.')
     const id = novoId()
     await env.BD.prepare(`
       INSERT INTO ocorrencias (id, servico_id, autor_id, tipo, descricao, foto_id, criada_em)
@@ -580,7 +580,7 @@ export function rotasServicos (api) {
     if (outro) {
       await avisar(env, outro, {
         tipo: 'ocorrencia',
-        titulo: `${c.nome} registou uma ocorrencia`,
+        titulo: `${c.nome} registou uma ocorrência`,
         corpo: `${s.aloj_nome} — ${String(corpo.descricao).slice(0, 80)}`,
         ligacao: `/app/#/servico/${s.id}`,
       })
@@ -591,7 +591,7 @@ export function rotasServicos (api) {
   api.get('/v1/servicos/:id/ocorrencias', async ({ env, pedido, params }) => {
     const c = await exigirConta(env, pedido)
     const { s, papel } = await carregar(env, c, params.id)
-    if (!papel) erro(403, 'Essa limpeza nao e sua.')
+    if (!papel) erro(403, 'Essa limpeza não é sua.')
     const r = await env.BD.prepare(`
       SELECT o.*, c.nome AS autor_nome FROM ocorrencias o JOIN contas c ON c.id = o.autor_id
        WHERE o.servico_id = ?1 ORDER BY o.criada_em`
@@ -624,8 +624,8 @@ async function atribuir (env, s, profissionalId, candidaturaId) {
   const prof = await env.BD.prepare('SELECT nome, email FROM contas WHERE id = ?1').bind(profissionalId).first()
   await avisar(env, profissionalId, {
     tipo: 'atribuido',
-    titulo: 'A limpeza e sua',
-    corpo: `${s.aloj_nome} — ${formatarDia(s.data)} as ${s.hora_inicio}. Ja pode ver a morada.`,
+    titulo: 'A limpeza é sua',
+    corpo: `${s.aloj_nome} — ${formatarDia(s.data)} as ${s.hora_inicio}. Já pode ver a morada.`,
     ligacao: `/app/#/servico/${s.id}`,
   })
   await avisar(env, s.dono_id, {

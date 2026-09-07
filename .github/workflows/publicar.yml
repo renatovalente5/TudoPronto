@@ -39,6 +39,12 @@ jobs:
       - name: Construir
         run: node _source/construir.mjs
 
+      - name: O texto visivel tem de estar acentuado
+        # As mensagens do Worker e a lista de tarefas chegaram uma vez ao ecra
+        # sem acentos («Loica lavada», «Esse alojamento ja nao existe»).
+        # Ninguem repara ao escrever codigo; repara-se numa fotografia.
+        run: node _source/verificar/portugues.mjs
+
       - name: A construcao tem de produzir o que se espera
         # Contar ficheiros nao prova paginas: o que parte um site e uma
         # ligacao para uma pagina que nao foi gerada.
