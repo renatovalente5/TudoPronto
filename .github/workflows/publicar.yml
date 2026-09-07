@@ -50,10 +50,14 @@ jobs:
                    app/sw.js app/manifesto.json; do
             test -s "$f" || { echo "FALTA: $f"; exit 1; }
           done
-          # Nenhuma pagina pode ir para o ar com um marcador de texto por
-          # substituir.
-          if grep -rlE '\{\{[A-Z_]+\}\}' --include='*.html' --include='*.js' . ; then
-            echo "Ha marcadores por substituir."; exit 1
+          # Nenhuma pagina pode ir para o ar com um marcador por substituir.
+          # A busca EXCLUI _source/: os moldes tem os marcadores de proposito,
+          # e apanha-los era acusar a fonte de um defeito da saida.
+          restos=$(grep -rlE '\{\{[A-Z_]+\}\}' \
+            --include='*.html' --include='*.js' --include='*.css' \
+            --exclude-dir=_source --exclude-dir=.git --exclude-dir=api . || true)
+          if [ -n "$restos" ]; then
+            echo "Marcadores por substituir em:"; echo "$restos"; exit 1
           fi
           echo "OK"
 

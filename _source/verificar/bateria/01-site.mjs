@@ -93,6 +93,48 @@ export async function correr (palco, certo) {
   certo(!encontradas.length,
     'o site nunca descreve quem limpa como empregado nosso', encontradas.join('; '))
 
+  /* Nada pode PROMETER trabalho, emprego ou rendimento.
+     Duas razões independentes. O DL 260/2009 regula a actividade das agências
+     privadas de colocação, e prometer colocação sem o ser é entrar nesse
+     regime. E o artigo 185.º da Lei 23/2007 pune a angariação de mão-de-obra
+     — num sector com muita mão-de-obra imigrante, prometer trabalho e cobrar
+     por ele é exactamente a previsão legal. Não cobramos nada a quem faz
+     limpezas, e também não prometemos nada. */
+  const PROMESSAS = [
+    'garantimos trabalho', 'trabalho garantido', 'ganhe até', 'ganha até',
+    'rendimento garantido', 'oferta de emprego', 'ofertas de emprego',
+    'arranjamos-lhe trabalho', 'encontramos-lhe trabalho', 'salário',
+  ]
+  const prometidas = []
+  for (const [caminho] of PAGINAS) {
+    await palco.ir(caminho)
+    /* Lê-se o texto SEM o que está marcado como lista de proibições: uma
+       lista de proibições tem de nomear o que proíbe, e uma heurística de
+       "há um «não» aqui perto" acusava os próprios termos de prometerem o
+       que vedam — o cabeçalho da lista fica 380 caracteres atrás. Marcar no
+       HTML é exacto; contar caracteres é adivinhar. */
+    const t = await palco.js(`
+      const c = document.body.cloneNode(true)
+      for (const n of c.querySelectorAll('[data-proibicoes]')) n.remove()
+      return c.innerText.replace(/\\s+/g, ' ').toLowerCase()`)
+    for (const frase of PROMESSAS) {
+      if (!t.includes(frase)) continue
+      const i = t.indexOf(frase)
+      const antes = t.slice(Math.max(0, i - 90), i)
+      if (/não|nao|nunca|sem /.test(antes)) continue
+      prometidas.push(`${caminho}: «${frase}»`)
+    }
+  }
+  certo(!prometidas.length,
+    'o site nunca promete trabalho, emprego nem rendimento', prometidas.join('; '))
+
+  /* E não pode haver nada a cobrar a quem faz limpezas. */
+  await palco.ir('/para-quem-limpa.html')
+  const paraElas = await palco.textoTodo()
+  certo(/não paga|Nada a pagar|sem qualquer comissão|não há percentagem/i.test(paraElas),
+    'e diz claramente que quem faz limpezas não paga nada',
+    paraElas.slice(0, 200))
+
   /* --- identificação do prestador (DL 7/2004 art. 10.º) --------------- */
   await palco.ir('/termos.html')
   const termos = await palco.textoTodo()

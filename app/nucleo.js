@@ -1375,11 +1375,16 @@ async function painelCandidatar (s) {
         bC.setAttribute('aria-pressed', String(modo === 'contra'))
         zonaValor.textContent = ''
         if (modo === 'contra') {
+          // O campo nasce VAZIO, de proposito. Pre-encher com o valor do dono
+          // ancorava a decisao dela nele — e um valor que a plataforma poe no
+          // campo e um valor que a plataforma sugeriu, o que e exactamente o
+          // indicio da alinea a) do art. 12.-A do Codigo do Trabalho. Sem
+          // minimo, sem maximo, sem sugestao: o numero e dela.
           zonaValor.append(campo({
             nome: 'valor', rotulo: 'Quanto quer receber (em euros)', tipo: 'number',
-            inputmode: 'decimal', min: '0', step: '0.5',
-            valor: propOferecido ? String(s.valor / 100) : '',
-            nota: 'Quem tem a casa vê este valor e decide.',
+            inputmode: 'decimal', min: '0', step: '0.5', valor: '',
+            placeholder: 'o valor que quiser',
+            nota: 'Escreva o seu preço. Quem tem a casa vê-o e decide.',
           }))
         }
       }

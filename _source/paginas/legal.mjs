@@ -210,7 +210,11 @@ export function termos () {
 
     <h2 id="conteudos">8. Conteúdos e comportamento</h2>
     <p>Não é permitido usar o ${esc(M.nome)} para:</p>
-    <ul>
+    <!-- Marcada para a bateria: as guardas que procuram promessas de trabalho
+         ou de rendimento ignoram o que estiver aqui dentro. Uma lista de
+         proibições tem de NOMEAR o que proíbe, e sem esta marca a guarda
+         acusava os termos de prometerem exactamente o que vedam. -->
+    <ul data-proibicoes>
       <li>publicar conteúdo ilegal, ofensivo, discriminatório ou enganoso;</li>
       <li>publicar fotografias onde apareçam pessoas identificáveis sem o
       consentimento delas, ou documentos e dados pessoais de terceiros;</li>

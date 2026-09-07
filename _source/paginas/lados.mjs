@@ -159,6 +159,8 @@ export function paraProfissional () {
       <li>Declarar os rendimentos que receber, nos termos que se aplicarem ao seu caso.</li>
       <li>Ter a sua situação contributiva regularizada, se e quando a lei o exigir.</li>
       <li>Emitir recibo ou factura a quem lhe pagar, se estiver obrigada a isso.</li>
+      <li>Ter seguro de acidentes de trabalho, que é obrigação de quem trabalha
+      por conta própria. Não é algo que possamos contratar por você.</li>
     </ul>
     <p>
       O ${esc(M.nome)} não retém impostos, não faz descontos e não emite documentos
